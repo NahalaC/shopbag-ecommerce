@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification - ShopBag</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .otp-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            color: #fff;
+            background: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .timer {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+        .resend-btn {
+            background: #28a745;
+        }
+        .resend-btn:hover {
+            background: #218838;
+        }
+        .hidden {
+            display: none;
+        }
+        .alert {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="otp-container">
+        <h1>OTP Verification</h1>
+        <p>Please enter the OTP sent to your email.</p>
+
+        <% if (error_msg) { %>
+            <div class="alert">
+                <%= error_msg %>
+            </div>
+        <% } %>
+
+        <!-- OTP Verification Form -->
+        <form action="/verify-otp" method="POST">
+            <input type="hidden" name="email" value="<%= email %>">
+            <input type="text" name="otp" placeholder="Enter OTP" required>
+            <button type="submit">Verify OTP</button>
+        </form>
+
+        <!-- Countdown Timer and Resend OTP -->
+        <p class="timer">Resend OTP in <span id="timer">60 seconds</span></p>
+        <form id="resendOTPForm" action="/resend-otp" method="POST" class="hidden">
+            <input type="hidden" name="email" value="<%= email %>">
+            <button type="submit" class="resend-btn">Resend OTP</button>
+        </form>
+    </div>
+
+    <script>
+        // Timer for OTP
+        let timeLeft = 60; // Timer set to 60 seconds
+        const timerElement = document.getElementById('timer');
+        const resendOTPForm = document.getElementById('resendOTPForm');
+
+        const countdown = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                timerElement.textContent = '';
+                resendOTPForm.classList.remove('hidden'); // Show the resend OTP button
+            } else {
+                timerElement.textContent = `${timeLeft} seconds`;
+                timeLeft--;
+            }
+        }, 1000);
+
+        // Resend OTP function
+        resendOTPForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            fetch('/resend-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: '<%= email %>' }) // Pass the user's email
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'OTP has been resent.') {
+                    alert('OTP resent successfully.');
+                    resendOTPForm.classList.add('hidden'); // Hide the resend button
+                    timeLeft = 60; // Reset the timer to 60 seconds
+                    timerElement.textContent = '60 seconds'; // Reset the timer display
+                    countdown(); // Restart the countdown
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+
+</html>

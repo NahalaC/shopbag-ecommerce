@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .profile-container {
+            margin: 50px auto;
+            max-width: 800px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .profile-container h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .profile-buttons {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-primary, .btn-danger, .btn-secondary {
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        @media(min-width: 768px) {
+            .btn-primary, .btn-danger, .btn-secondary {
+                width: calc(50% - 10px);
+            }
+        }
+
+        .header__nav__option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-button button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .login-button button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-logout {
+            margin-top: 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+        }
+
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+
+        .profile-icon {
+            color: #007bff;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header and Nav -->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 d-flex justify-content-between align-items-center">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
+                        <a href="#"><img src="img/icon/heart.png" alt=""></a>
+                        <a href="#"><img src="img/icon/cart.png" alt=""><span></span></a>
+                        <div class="price">$0.00</div>
+                        <a href="/profile" class="profile-icon">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <% if (user) { %>
+                            <a href="/profile" class="login-button">
+                                <button><%= user.username %></button>
+                            </a>
+                        <% } else { %>
+                            <a href="/login" class="login-button">
+                                <button>Login</button>
+                            </a>
+                        <% } %>
+                    </div>
+                    <!-- <a href="/logout" class="btn btn-logout">Logout</a> -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- User Profile Section -->
+    <section class="user-profile-section">
+        <div class="container">
+            <div class="profile-container">
+                <h2>User Profile</h2>
+                <form action="/profile/update" method="POST">
+                    <div class="form-group">
+                        <label for="username">Name</label>
+                        <input type="text" id="username" name="username" class="form-control" value="<%= user.username %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" value="<%= user.email %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address" class="form-control" value="<%= user.address %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" value="<%= user.phone %>" required>
+                    </div>
+
+                    <!-- Profile buttons -->
+                    <div class="profile-buttons">
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                        <a href="/logout" class="btn btn-danger">Logout</a>
+                        <a href="/cart" class="btn btn-secondary">My Cart</a>
+                        <a href="/wishlist" class="btn btn-secondary">My Wishlist</a>
+                        <a href="/orders" class="btn btn-secondary">My Orders</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+        // Redirect to home page after logout
+        document.querySelector('.btn-logout').addEventListener('click', function (e) {
+            e.preventDefault();
+            window.location.href = "/";
+        });
+    </script>
+</body>
+</html>
