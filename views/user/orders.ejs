@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body><head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+</head>
+<body>
+    <!-- Page Preloder -->
+    <%- include('../partials/header') %>
+    <body>
+        <!-- Breadcrumb Section Begin -->
+        <section class="breadcrumb-option">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb__text">
+                            <h4>Orders List</h4>
+                            <div class="breadcrumb__links">
+                                <a href="/">Home</a>
+                                <a href="/getOrders">orders</a>
+                                <span>Orders List</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Breadcrumb Section End -->
+        <div class="container mt-5">
+            <div class="row">
+                <% if (orders.length === 0) { %>
+                    <div class="col-12 align-content-center h3" style="height: 30vh;">
+                        <div class="alert alert-info text-center">No orders found.</div>
+                        <div class="d-flex justify-content-center py-4">
+                            <div class="continue__btn">
+                                <a href="/shop">Continue Shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <% orders.forEach(order => { %>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <!-- Order Items -->
+                                    <h5 class="card-title text-uppercase">
+                                        <% if (order.orderedItems && order.orderedItems.length > 0) { %>
+                                            <% order.orderedItems.forEach(item => { %>
+                                                <% if (item.productId) { %>
+                                                    <div style="display: flex; align-items: center;">
+                                                        <div class="product__cart__item__pic">
+                                                           
+                                                            <img src="/uploads/product-images/<%= item.productId.productImage[0] %>" alt="<%= item.productId.productName %>" style="width: 50px; height: 50px; margin-right: 10px;"  />
+                                                        </div>
+                                                        <h6 style="margin: 0;"><%= item.productId.productName %></h6>
+                                                        <br>
+                                                       <span class="p-2">
+                                                        (<%= item.quantity%>)
+                                                       </span>
+
+                                                    </div>
+                                                <% } %>
+                                            <% }); %>
+                                        <% } else { %>
+                                            No product information available
+                                        <% } %>
+                                    </h5>
+        
+                                    <!-- Order Date -->
+                                   
+                                    <p class="card-text">
+                                        <strong>Date of Order:</strong> <%= new Date(order.createdOn).toLocaleDateString() %>
+                                    </p>
+        
+                                    <!-- Order Price -->
+                                    <p class="card-text">
+                                        <strong>Price:</strong> ₹<%= order.totalPrice.toFixed(2) %>
+                                    </p>
+        
+                                    <!-- Payment Method -->
+                                    <p class="card-text">
+                                        <strong>Payment Method:</strong> <%= order.paymentMethod %>
+                                    </p>
+        
+                                    <!-- Order Status -->
+                                    <p class="card-text">
+                                        <strong>Status:</strong> <%= order.status %>
+                                    </p>
+        
+                                    <!-- Action Button -->
+                                    <a href="/orderDetails?orderId=<%= order._id %>" class="btn btn-dark btn-sm">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } %>
+            </div>
+        
+            <% if (totalPages > 1) { %>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mt-4">
+                        <% if (currentPage > 1) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
+                            </li>
+                        <% } %>
+                        
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                            </li>
+                        <% } %>
+                        
+                        <% if (currentPage < totalPages) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            <% } %>
+        </div>
+        
+        
+
+         
+  <%- include('../partials/userfooter')%>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      
     <meta charset="utf-8">
-    <title>Fashion Admin Page</title>
+    <title>Shopbag Admin Page</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,9 +15,75 @@
     <meta property="og:image" content="">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/public/assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="/admincss/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
-    <link href="/public/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <link href="/admincss/assets/css/main.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- required for dropdowns--->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+   
+/* General body background */
+body {
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Dark text color for readability */
+}
+
+/* Navbar background */
+.navbar {
+    background-color: #e0e0e0; /* Light gray background for navbar */
+    color: #333; /* Dark text color */
+}
+
+/* Sidebar background */
+.navbar-aside {
+    background-color: #ffffff; /* White background for sidebar */
+    color: #333; /* Dark text color */
+}
+
+/* Menu item links */
+.menu-item a.menu-link {
+    color: #333; /* Dark text color */
+}
+
+/* Menu item link hover and active states */
+.menu-item a.menu-link:hover,
+.menu-item a.menu-link.active {
+    background-color: #d0d0d0; /* Light gray background on hover */
+    color: #000; /* Dark text color */
+}
+
+/* Dropdown menu background */
+.dropdown-menu {
+    background-color: #ffffff; /* White background for dropdown */
+    color: #333; /* Dark text color */
+}
+
+/* Dropdown item hover effect */
+.dropdown-item:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #000; /* Dark text color */
+}
+
+/* Submenu styling */
+.submenu {
+    background-color: #ffffff; /* White background for submenu */
+    color: #333; /* Dark text color */
+    border: 1px solid #ccc; /* Light border for submenu */
+}
+
+/* Submenu item hover effect */
+.submenu a:hover {
+    background-color: #e0e0e0; /* Light gray background on hover */
+    color: #000; /* Dark text color */
+}
+
+
+        </style>
+        
     
 </head>
 <body class="dark">
@@ -39,16 +105,16 @@
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" > <i class="icon material-icons md-shopping_bag"></i>
-                        <span class="text">Categories</span>
+                <li class="menu-item">
+                    <a href="/admin/categories" class="btn" style=" color: white; display: inline-block;">
+                      <i class="icon material-icons md-shopping_bag"></i>
+                      Categories
                     </a>
-                    <div class="submenu">
-                        <!-- <a href="/admin/UpdateCategory">Update Categories </a> -->
-                        <a href="/admin/Categories">Categories</a>
-                        <a href="/admin/addCategories">Add Categories</a>
-                    </div>
-                </li>
+                  </li>
+                  
+                  
+                  
+                
                 <li class="menu-item has-submenu">
                     <a class="menu-link" > <i class="icon material-icons md-add_box"></i>
                         <span class="text">Products</span>
@@ -56,13 +122,11 @@
                     <div class="submenu">
                         <a href="/admin/products">Products</a>
                         <a href="/admin/addProduct">Add products</a>
-                        <!-- <a href="page-form-product-1.html">Add product 1</a> -->
-                        <!-- <a href="/admin/updateProduct">Update Products</a> -->
-                        <!-- <a href="page-form-product-4.html">Add product 4</a> -->
+                        
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                    <a class="menu-link" href="admin/orders"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
@@ -141,7 +205,7 @@
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                <form class="searchform">
+                <!-- <form class="searchform">
                     <div class="input-group">
                         <input list="search_terms" type="text" class="form-control" placeholder="Search term">
                         <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
@@ -152,7 +216,7 @@
                         <option value="Apple iphone">
                         <option value="Ahmed Hassan">
                     </datalist>
-                </form>
+                </form> -->
             </div>
             <div class="col-nav">
                 <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
@@ -161,19 +225,63 @@
                         <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
                     </li>
                     
-                    <li class="dropdown nav-item">
+                    <!-- <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/public/assets/imgs/people/avatar2.jpg" alt="User"></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                             
                             <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
                              
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            <a class="dropdown-item text-danger" href="/admin/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li> -->
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="/admin/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
                         </div>
                     </li>
+
                 </ul>
             </div>
         </header>
+
+        <script>
+            document.querySelectorAll('.menu-item.has-submenu .menu-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault(); 
+        
+               
+                const parentMenuItem = this.parentElement;
+        
+               
+                parentMenuItem.classList.toggle('active');
+        
+          
+                document.querySelectorAll('.menu-item.has-submenu').forEach(item => {
+                    if (item !== parentMenuItem) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+        document.addEventListener('click', function (e) {
+    const isClickInsideMenu = e.target.closest('.menu-item.has-submenu');
+
+ 
+    if (!isClickInsideMenu) {
+        document.querySelectorAll('.menu-item.has-submenu').forEach(item => {
+            item.classList.remove('active');
+        });
+    }
+});
+
+
+
+        </script>
+        
+        
 
 </body>
 </html>

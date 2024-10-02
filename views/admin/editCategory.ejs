@@ -1,0 +1,143 @@
+<%- include('../partials/adminHeader') %>
+<style>
+  .error-message {
+    color: red;
+  }
+</style>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6 mt-60">
+      <form
+        method="post"
+        action="/admin/editCategory/<%= category._id %>"
+        onsubmit="return handleFormSubmit(event) "
+      >
+        <div class="d-grid text-end mt-30 col-md-5">
+          <button class="btn btn-primary" type="submit">Update category</button>
+        </div>
+        <div class="mb-4 mt-30">
+          <label for="product_name" class="form-label">Name</label>
+          <input
+            type="text"
+            name="categoryName"
+            value="<%=category.name%>"
+            class="form-control border"
+          />
+          <div id="name-error" class="error-message"></div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Description</label>
+          <textarea
+            id="descriptionId"
+            name="description"
+            class="form-control border"
+          >
+<%=category.description%></textarea
+          >
+          <div id="description-error" class="error-message"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+  async function handleFormSubmit(event) {
+    event.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    const name = document.getElementsByName("categoryName")[0].value;
+    const description = document.getElementById("descriptionId").value;
+
+    // Using fetch for Ssnding request to the server
+    fetch("/admin/editCategory/<%= category._id %>", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, description }),
+    })
+      .then(async (response) => {
+        const data = await response.json();
+
+        if (!response.ok) {
+          Swal.fire({
+            icon: "warning",
+            title: "warning",
+            text: "Category Alrweady Exist!",
+          });
+        } else {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Category updated successfully!",
+          }).then(() => {
+            window.location.href = "/admin/categories";
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops",
+          text: "An error occurred. Please try again.",
+        }).then(() => {
+          location.reload();
+        });
+      });
+  }
+
+  function validateForm() {
+    clearErrorMessages();
+
+    const name = document.getElementsByName("categoryName")[0].value.trim();
+    const description = document.getElementById("descriptionId").value.trim();
+    let isValid = true;
+
+    console.log(`Name: ${name}`);
+    console.log(`Description: ${description}`);
+
+    if (name === "") {
+      displayErrorMessage("name-error", "Please enter a category name");
+      isValid = false;
+    } else if (!/^[a-zA-Z\s]+$/.test(name)) {
+      displayErrorMessage(
+        "name-error",
+        "Category name should contain only alphabetic characters"
+      );
+      isValid = false;
+    }
+
+    if (description === "") {
+      displayErrorMessage("description-error", "Please enter a description");
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  function displayErrorMessage(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.style.display = "block";
+    }
+  }
+
+  function clearErrorMessages() {
+    const errorElements = document.querySelectorAll(".error-message");
+    errorElements.forEach((el) => {
+      el.textContent = "";
+      el.style.display = "none";
+    });
+  }
+</script>
+<%- include('../partials/adminFooter') %>

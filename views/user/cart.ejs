@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body><head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+</head>
+<style>
+    .cart__close {
+    text-align: center; /* Center-align the close icon */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+}
+
+.close-icon {
+    transition: color 0.3s; /* Transition for hover effect */
+}
+
+.close-icon:hover {
+    color: darkred; /* Change color on hover */
+}
+.cart-table {
+    width: 100%;
+    border-collapse: collapse; /* Merges borders between cells */
+}
+
+.cart-table th, .cart-table td {
+    padding: 12px; /* Adds space inside the cells */
+    text-align: left; /* Aligns text to the left */
+    border-bottom: 1px solid #ddd; /* Adds a border below each row */
+}
+
+.cart-table th {
+    background-color: #f8f8f8; /* Light background for headers */
+    font-weight: bold; /* Bold text for headers */
+}
+
+.cart-table tr:hover {
+    background-color: #f1f1f1; /* Changes background on hover for rows */
+}
+
+.cart__close {
+    text-align: center; /* Centers the remove icon */
+}
+
+.cart-product-quantity {
+    display: flex; /* Uses flexbox for better alignment */
+    align-items: center; /* Centers items vertically */
+}
+
+
+</style>
+<body>
+    <!-- Page Preloder -->
+    <%- include('../partials/header') %>
+    
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Shopping Cart</h4>
+                        <div class="breadcrumb__links">
+                            <a href="/">Home</a>
+                            <a href="/shop">Shop</a>
+                            <span>Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: #f2f2f2; text-align: left;">
+                                    <th style="padding: 10px; font-weight: bold;">Product</th>
+                                    <th style="padding: 10px; font-weight: bold;">Price</th>
+                                    <th style="padding: 10px; font-weight: bold;">Quantity</th>
+                                    <th style="padding: 10px; font-weight: bold;">Total</th>
+                                    <th style="padding: 10px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (cartItems.length > 0) { %>
+                                    <% cartItems.forEach(item => { %>
+                                        <% if (item.productId && item.productId.productImage && item.productId.productImage.length > 0) { %>
+                                            <tr style="background-color: #fff; text-align: left;">
+                                                <td class="product__cart__item" style="padding: 10px;">
+                                                    <div class="product__cart__item__pic">
+                                                        <img src="/uploads/product-images/<%= item.productId.productImage[0] %>" alt="<%= item.productId.productName %>" style="width: 50px; height: 50px;" />
+                                                    </div>
+                                                    <div class="product__cart__item__text">
+                                                        <h6 style="margin: 0;"><%= item.productId.productName %></h6>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 10px;">₹<%= item.productId.salePrice.toFixed(2) %></td> 
+                                                <td class="quantity-col" style="padding: 10px;">
+                                                    <div class="cart-product-quantity">
+                                                        <input 
+                                                            type="number" 
+                                                            class="form-control quantity-input" 
+                                                            value="<%= item.quantity %>" 
+                                                            data-stock="<%= item.productId.quantity %>" 
+                                                            data-productid="<%= item.productId._id %>" 
+                                                            data-price="<%= item.productId.salePrice %>" <!-- Corrected price data --
+                                                            onchange="updateCart(this)" 
+                                                            required 
+                                                            min="1" 
+                                                            style="width: 60px; text-align: center;"
+                                                        >
+                                                    </div>
+                                                </td>
+                                                <td class="total-price" style="padding: 10px;">
+                                                    ₹<span class="item-total" id="total-<%= item.productId._id %>"><%= (item.productId.salePrice * item.quantity).toFixed(2) %></span> 
+                                                </td>
+                                                <td class="cart__close" style="padding: 10px;">
+                                                    <i class="fa fa-close" 
+                                                       style="cursor: pointer;" 
+                                                       onclick="removeProduct('<%= item.productId._id %>')"></i> 
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td colspan="5" style="padding: 10px; text-align: center;">Your cart is empty.</td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                            
+                        </table>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="/shop">Continue Shopping</a>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__discount">
+                        <h6>Discount codes</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Coupon code">
+                            <button type="submit">Apply</button>
+                        </form>
+                    </div>
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span class="subtotal">₹ <%= subtotal.toFixed(2) %></span></li>
+                            <% if (shippingCharge > 0) { %>
+                                <li>Shipping Charges <span class="shipping-charge">₹ <%= shippingCharge.toFixed(2) %></span></li>
+                            <% } else { %>
+                                <li>Shipping Charges <span class="shipping-charge">Free</span></li> 
+                            <% } %>
+                            <li>Total <span class="total">₹ <%= total.toFixed(2) %></span></li>
+                        </ul>
+                        <a href="/checkout" class="primary-btn">Proceed to checkout</a>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+
+   
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.countdown.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function checkQuantity(inputElement) {
+            const maxQuantity = 3; 
+            const currentQuantity = parseInt(inputElement.value, 10);
+            
+            console.log("Current Quantity: ", currentQuantity);
+        
+           
+            if (currentQuantity > maxQuantity) {
+               
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Limit Exceeded',
+                    text: `You can only order up to ${maxQuantity} items at a time.`
+                }).then(() => {
+                    inputElement.value = maxQuantity; 
+                    updateCart(inputElement); 
+                });
+            } else {
+               
+                updateCart(inputElement);
+            }
+        }
+        
+        function updateCart(inputElement) {
+    const quantityInput = inputElement;
+    const productId = quantityInput.getAttribute("data-productid");
+    const stockQuantity = parseInt(quantityInput.getAttribute("data-stock"), 10);
+    const newQuantity = parseInt(quantityInput.value, 10);
+    const pricePerItem = parseFloat(quantityInput.getAttribute("data-price")); 
+
+    // Validate quantity against max limit
+    if (newQuantity > 3) {
+        quantityInput.value = 3; 
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Can't order more than 3 at a time.",
+        });
+        return; 
+    }
+
+    // Update individual item's total price
+    const totalPrice = newQuantity * pricePerItem;
+    const totalPriceElement = quantityInput.closest('tr').querySelector('.total-price span'); 
+    totalPriceElement.textContent = totalPrice.toFixed(2); 
+
+    // Update the cart and recalculate the overall total
+    const cartItems = document.querySelectorAll('.quantity-input');
+    let subtotal = 0;
+
+    cartItems.forEach(item => {
+        const itemQuantity = parseInt(item.value, 10);
+        const itemPrice = parseFloat(item.getAttribute("data-price")); 
+        subtotal += itemQuantity * itemPrice; // Calculate subtotal
+    });
+
+    
+    const shippingCharge = subtotal > 500 ? 50 : 0;
+    const total = subtotal + shippingCharge;
+
+    // Update subtotal and total in the DOM
+    document.querySelector('.cart__total .subtotal').textContent = `₹ ${subtotal.toFixed(2)}`;
+    document.querySelector('.cart__total .shipping-charge').textContent = `₹ ${shippingCharge.toFixed(2)}`;
+    document.querySelector('.cart__total .total').textContent = `₹ ${total.toFixed(2)}`;
+
+    // Prepare data for updating the cart
+    const quantities = { [productId]: newQuantity };
+
+    // Send the update request to the server
+    fetch('/updateCart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantities }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            console.error('Failed to update cart:', data.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to update cart. Please try again.'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while updating the cart.'
+        });
+    });
+}
+
+
+        </script>
+
+    
+    
+    <script>
+function removeProduct(productId) {
+  
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('/removeProductFromCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productId }), 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); }); 
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    location.reload(); 
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Failed to remove product from cart.'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'An error occurred while trying to remove the product.'
+                });
+            });
+        }
+    });
+}
+
+    
+
+    </script>
+    
+
+</body>
+<%- include('../partials/userfooter')%>
+</html>

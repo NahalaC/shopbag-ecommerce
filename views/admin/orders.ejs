@@ -1,0 +1,89 @@
+<%- include('../partials/adminHeader') %>
+
+
+
+
+
+
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <div class="container mt-4">
+                <h2 class="mb-4">Orders</h2>
+                <table class="table">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Order ID</th>
+                            <th>Date of Order</th>
+                            <th>User Name</th>
+                            <th>Payment Method</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach(order => { %>
+                            <tr class="text-center">
+                                <td><%= order.orderId %></td>
+                                <td><%= new Date(order.createOn).toLocaleDateString() %></td>
+                                <td><%= order.userId ? order.userId.name : 'N/A' %></td> 
+                                <td><%= order.paymentMethod || 'N/A' %></td> 
+                                <td>₹<%= order.totalPrice.toFixed(2) %></td> 
+                                <td>
+                                    <form action="/admin/updateOrderStatus" method="POST">
+                                        <input type="hidden" name="orderId" value="<%= order._id %>">
+                                        <select name="status" onchange="this.form.submit()">
+                                            <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                            <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                            <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                                            <option value="Return Request" <%= order.status === 'Return Request' ? 'selected' : '' %>>Return Request</option>
+                                            <option value="Returned" <%= order.status === 'Returned' ? 'selected' : '' %>>Returned</option>
+                                        </select>
+                                    </form>
+                                </td>
+                                <td>
+                                    <a href="/admin/orders/<%= order._id %>" class="btn btn-info">View</a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                    
+                </table>
+            
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <% for(let i = 1; i <= totalPages; i++) { %>
+                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+                
+            </div>
+            
+           
+              
+              
+              
+                
+               
+                
+               
+              
+              
+               
+               
+               
+               
+            
+        </table>
+    </div> 
+</div>
+
+
+
+
+<%- include('../partials/adminFooter') %>

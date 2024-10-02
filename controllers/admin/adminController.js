@@ -1,58 +1,84 @@
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
-const flash = require('express-flash');
+const mongoose = require("mongoose");
 
-const renderAdminLogin = (req, res) => {
-    let passwordError = req.flash('error')[0] || null;
-    res.render('admin/adminLogin', { passwordError });
-};
+const pageError = async (req, res) => {
+    res.render("admin/pageError")
 
-const adminLogin = async (req, res) => {
-    console.log('recieved post request adminlogin');
-    
-    const { email, password } = req.body;
+}
 
+//adminloginpage laoding
+const loadAdmin = async (req, res) => {
     try {
-        const user = await User.findOne({ email });
 
-        if (!user) {
-            req.flash("error", "Invalid email or password");
-            return res.redirect("/adminLogin");
-        }
-
-        const passwordMatch = await bcrypt.compare(password, user.password);
-
-        if (!passwordMatch) {
-            req.flash("error", "Invalid email or password");
-            return res.redirect("/adminLogin");
-        }
-
-        if (user.status) {
-            req.flash("error", "User is blocked!");
-            return res.redirect("/adminLogin");
-        }
-
-        if (user.isAdmin) {
-            req.session.isAdminAuthenticated = true;
-            req.session.adminData = {
-                id: user._id,
-                username: user.username,
-                email: user.email
-            };
-
-            return res.redirect("/dashboard");
+        if (req.session.admin) {
+            return res.redirect("/admin/dashboard");
         } else {
-            req.flash("error", "Not authorized as admin");
-            return res.redirect("/login");
+            return res.render("admin/admin-login", { message: null })
+        }
+
+    } catch (error) {
+        console.log(("unexpected error during loading login", error));
+        res.redirect("/pageError")
+    }
+}
+const login = async (req, res) => {
+    try {
+
+
+        const { email, password } = req.body;
+        const admin = await User.findOne({ email, isAdmin: true });
+
+        if (admin) {
+            const passwordMatch = await bcrypt.compare(password, admin.password);
+            if (passwordMatch) {
+                req.session.admin = true;
+                // redirecting to dashboard
+                return res.redirect('/admin/dashboard');
+            } else {
+                req.flash('error', 'Invalid password');
+                return res.redirect('/admin/login');
+            }
+        } else {
+            req.flash('error', 'Admin not found');
+            return res.redirect('/admin/login');
         }
     } catch (error) {
-        console.error("Admin login error:", error);
-        req.flash("error", "Failed to log in");
-        res.redirect("/adminLogin");
+        console.error('Admin login error:', error);
+        return res.redirect('/pageError');
     }
 };
+const loadDashboard = (req, res) => {
+    if (req.session.admin) {
+        res.render('admin/dashboard');
+    } else {
+        res.redirect('/admin/login');
+    }
+};
+const logout = async (req, res) => {
+    try {
+        req.session.admin = false;
+        // req.session.destroy();
 
+        // ((err)=>{
+        //     if(err){
+        //         console.log("Error destroying session",err)
+        //         return res.redirect("/pageError")
+        //     }
+        res.redirect("/admin/login")
+    }
+
+    catch (error) {
+        console.log(("unexpected error during logout", error));
+        res.redirect("/pageError")
+
+    }
+}
 module.exports = {
-    adminLogin,
-    renderAdminLogin
+
+    loadAdmin,
+    login,
+    loadDashboard,
+    pageError,
+    logout
 };

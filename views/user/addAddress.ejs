@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body><head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+</head>
+<body>
+    <!-- Page Preloder -->
+    <%- include('../partials/header') %>
+<div class="container mt-5">
+    <h2 class="text-center">Add New Address</h2>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form id="addAddressForm" action="/addAddress" method="POST">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="addressType">Address Type</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="addressType" name="addressType">
+                                            <option value="" disabled selected>Select Address Type</option>
+                                            <option value="Home">Home</option>
+                                            <option value="Work">Work</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <input type="text" class="form-control" id="customAddressType" name="customAddressType" placeholder="Please specify" style="display: none;">
+                                    </div>
+                                    <small id="error-addressType" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name">
+                                    <small id="error-name" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="city" name="city">
+                                    <small id="error-city" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="state">State</label>
+                                    <select class="form-control" id="state" name="state">
+                                        <option value="" disabled selected>Select State</option>
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Odisha">Odisha</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+                                    </select>
+                                    <small id="error-state" class="text-danger"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode">
+                                    <small id="error-pincode" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="text" class="form-control" id="phone" name="phone">
+                                    <small id="error-phone" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="email">Email (Optional)</label>
+                                    <input type="email" class="form-control" id="email" name="email">
+                                    <small id="error-email" class="text-danger"></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="/profile" class="btn btn-outline-secondary">Back to Profile</a>
+                            <button type="submit" class="btn btn-primary">Add Address</button>
+                        </div>
+                        <input type="hidden" name="returnTo" value="<%= returnTo %>">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('addressType').addEventListener('change', function() {
+        const customAddressTypeField = document.getElementById('customAddressType');
+        if (this.value === 'Other') {
+            customAddressTypeField.style.display = 'block';
+            customAddressTypeField.focus();
+        } else {
+            customAddressTypeField.style.display = 'none';
+            customAddressTypeField.value = ''; 
+        }
+    });
+
+    const form = document.getElementById('addAddressForm');
+    form.addEventListener('submit', function(event) {
+        let valid = true;
+        document.querySelectorAll('.text-danger').forEach(el => el.innerText = '');
+
+       
+        const addressType = document.getElementById('addressType').value.trim();
+        const customAddressType = document.getElementById('customAddressType').value.trim();
+        const name = document.getElementById('name').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const state = document.getElementById('state').value.trim();
+        const pincode = document.getElementById('pincode').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const email = document.getElementById('email').value.trim();
+
+        // Validate Address Type
+        if (addressType === '') {
+            document.getElementById('error-addressType').innerText = 'Address Type is required.';
+            valid = false;
+        } else if (addressType === 'Other') {
+            if (customAddressType === '') {
+                document.getElementById('error-addressType').innerText = 'Please specify the address type.';
+                valid = false;
+            } else if (!/^[a-zA-Z\s]+$/.test(customAddressType)) {
+                document.getElementById('error-addressType').innerText = 'Address Type must contain only letters.';
+                valid = false;
+            }
+        }
+
+        // Validate Name
+        if (name === '') {
+            document.getElementById('error-name').innerText = 'Name is required.';
+            valid = false;
+        }
+
+        // Validate City
+        if (city === '') {
+            document.getElementById('error-city').innerText = 'City is required.';
+            valid = false;
+        }
+
+        // Validate State
+        if (state === '') {
+            document.getElementById('error-state').innerText = 'State is required.';
+            valid = false;
+        }
+
+        // Validate Pincode (must be exactly 6 digits)
+        if (pincode === '') {
+            document.getElementById('error-pincode').innerText = 'Pincode is required.';
+            valid = false;
+        } else if (!/^\d{6}$/.test(pincode)) {
+            document.getElementById('error-pincode').innerText = 'Pincode must be 6 digits.';
+            valid = false;
+        }
+
+        // Validate Phone (must be exactly 10 digits)
+        if (phone === '') {
+            document.getElementById('error-phone').innerText = 'Phone Number is required.';
+            valid = false;
+        } else if (!/^\d{10}$/.test(phone)) {
+            document.getElementById('error-phone').innerText = 'Phone Number must be 10 digits.';
+            valid = false;
+        }
+
+        // Optionally, validate Email format (if provided)
+        if (email && !/\S+@\S+\.\S+/.test(email)) {
+            document.getElementById('error-email').innerText = 'Email format is invalid.';
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }
+    });
+</script>

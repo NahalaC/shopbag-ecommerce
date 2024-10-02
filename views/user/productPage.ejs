@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zxx">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Male_Fashion Template" />
+    <meta name="keywords" content="Male_Fashion, unica, creative, html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ShopBag-SingleProduct</title>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Css Styles -->
+    <link
+      rel="stylesheet"
+      href="/stylesheets/bootstrap.min.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/font-awesome.min.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/elegant-icons.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/magnific-popup.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/nice-select.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/owl.carousel.min.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/slicknav.min.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
+    <style>
+      .quantity {
+    display: flex; /* Align items horizontally */
+    align-items: center; /* Center items vertically */
+}
+
+.qty-input {
+    width: 30px; /* Set a small width for the input box */
+    height: 24px; /* Adjust height to make it smaller */
+    text-align: center; /* Center the text */
+    margin: 0 5px; /* Add some space between input and arrows */
+    font-size: 14px; /* Adjust font size */
+    border: 1px solid #ccc; /* Add a border */
+}
+
+.arrow-btn {
+    font-size: 16px; /* Size of arrows */
+    padding: 2px 5px; /* Add padding for better click area */
+    background-color: #f0f0f0; /* Light background for better visibility */
+    border: 1px solid #ccc; /* Same border as input */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.arrow-btn:hover {
+    background-color: #e0e0e0; /* Darker background on hover */
+}
+
+    </style>
+  </head>
+
+  <body>
+    <!-- Page Preloder -->
+    <%- include('../partials/header') %>
+
+    <!-- Shop Details Section Begin -->
+    <section class="shop-details">
+      <div class="product__details__pic">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="product__details__breadcrumb">
+                <a href="/">Home</a>
+                <a href="shop">Shop</a>
+                <span>Product Details</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3 col-md-3">
+              <ul class="nav nav-tabs" role="tablist">
+                <% product.productImage.forEach((image, index) => { %>
+                <li class="nav-item">
+                  <a
+                    class="nav-link <%= index === 0 ? 'active' : '' %>"
+                    data-toggle="tab"
+                    href="#tabs-<%= index + 1 %>"
+                    role="tab"
+                  >
+                    <div
+                      class="product__thumb__pic set-bg"
+                      data-setbg="/uploads/product-images/<%= image %>"
+                    ></div>
+                  </a>
+                </li>
+                <% }); %>
+              </ul>
+            </div>
+            <div class="col-lg-6 col-md-9">
+              <div class="tab-content">
+                <% product.productImage.forEach((image, index) => { %>
+                <div
+                  class="tab-pane <%= index === 0 ? 'active' : '' %>"
+                  id="tabs-<%= index + 1 %>"
+                  role="tabpanel"
+                >
+                  <div class="product__details__pic__item zoom-container">
+                    <img
+                      src="/uploads/product-images/<%= image %>"
+                      alt=""
+                      class="zoom-img"
+                      style="width: 100%; height: auto"
+                    />
+                    <div class="zoom-lens"></div>
+                  </div>
+                  <div class="zoom-result" id="zoom-result"></div>
+                </div>
+                <% }); %>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+              <div class="zoom-display" id="zoom-display"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product__details__content">
+        <div class="container">
+          <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+              <div class="product__details__text">
+                <h2 class="product-title"><%= product.productName %></h2>
+                <div class="rating">
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star-o"></i>
+                  <span> - 5 Reviews</span>
+                </div>
+                <div class="product-price">₹<%= product.salePrice %></div>
+                <div>
+                  <label>Category:</label>
+                  <a> <%= product.category.name %> </a>
+                </div>
+
+                <div class="product-cat">
+                   <%= product.description %> 
+                </div>
+                <!-- <div class="product__details__option">
+                  <div class="product__details__option__color">
+                    <span>Color:</span>
+                    <label class="c-1" for="sp-1">
+                      <input type="radio" id="sp-1" />
+                    </label>
+                    <label class="c-2" for="sp-2">
+                      <input type="radio" id="sp-2" />
+                    </label>
+                    <label class="c-3" for="sp-3">
+                      <input type="radio" id="sp-3" />
+                    </label>
+                    <label class="c-4" for="sp-4">
+                      <input type="radio" id="sp-4" />
+                    </label>
+                    <label class="c-9" for="sp-9">
+                      <input type="radio" id="sp-9" />
+                    </label>
+                  </div>
+                </div> -->
+                
+
+                
+                
+             
+                 
+                  
+                <% if (product.quantity > 0) { %>
+                  <div class="stock-info mb-2" style="font-weight: bold;">
+                    Available Stock: <span style="color: green;"><%= product.quantity %></span>
+                </div>
+                  <!-- Quantity selector -->
+                  <div class="cart-product-quantity mb-3">
+                      <input 
+                          type="number" 
+                          class="form-control quantity-input" 
+                          id="quantity-input" 
+                          value="1" 
+                          min="1" 
+                          max="3" 
+                          style="width: 70px; display: inline-block;"
+                          oninput="checkQuantity(this)" 
+                      />
+                  </div>
+                  <!-- Show Add to Cart button if product is in stock -->
+                  <button 
+                      class="btn btn-cart" 
+                      onclick="addToCart('<%= product._id %>', document.getElementById('quantity-input').value)"
+                  >
+                      Add to Cart
+                  </button>
+              <% } else { %>
+                  <!-- Show Out of Stock message if product is out of stock -->
+                  <span class="out-of-stock" style="color: red; font-weight: bold;">
+                      Out of Stock
+                  </span>
+              <% } %>
+                
+                </div>
+                <div class="product__details__btns__option">
+                  <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
+                </div>
+                <div class="product__details__last__option">
+                  <h5><span>Guaranteed Safe Checkout</span></h5>
+                  <img src="img/shop-details/details-payment.png" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="product__details__tab">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      data-toggle="tab"
+                      href="#tabs-5"
+                      role="tab"
+                      >Description</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      data-toggle="tab"
+                      href="#tabs-6"
+                      role="tab"
+                      >Customer Previews(5)</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      data-toggle="tab"
+                      href="#tabs-7"
+                      role="tab"
+                      >Additional information</a
+                    >
+                  </li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                    <div class="product__details__tab__content">
+                      <p class="note">
+                        Nam tempus turpis at metus scelerisque placerat nulla
+                        deumantos solicitud felis. Pellentesque diam dolor,
+                        elementum etos lobortis des mollis ut risus. Sedcus
+                        faucibus an sullamcorper mattis drostique des commodo
+                        pharetras loremos.
+                      </p>
+                      <div class="product__details__tab__content__item">
+                        <h5>Products Infomation</h5>
+                        <p>
+                          A Pocket PC is a handheld computer, which features
+                          many of the same capabilities as a modern PC. These
+                          handy little devices allow individuals to retrieve and
+                          store e-mail messages, create a contact file,
+                          coordinate appointments, surf the internet, exchange
+                          text messages and more. Every product that is labeled
+                          as a Pocket PC must be accompanied with specific
+                          software to operate the unit and must feature a
+                          touchscreen and touchpad.
+                        </p>
+                        <p>
+                          As is the case with any new technology product, the
+                          cost of a Pocket PC was substantial during it’s early
+                          release. For approximately ₹700.00, consumers could
+                          purchase one of top-of-the-line Pocket PCs in 2003.
+                          These days, customers are finding that prices have
+                          become much more reasonable now that the newness is
+                          wearing off. For approximately ₹350.00, a new Pocket
+                          PC can now be purchased.
+                        </p>
+                      </div>
+                      <div class="product__details__tab__content__item">
+                        <h5>Material used</h5>
+                        <p>
+                          Polyester is deemed lower quality due to its none
+                          natural quality’s. Made from synthetic materials, not
+                          natural like wool. Polyester suits become creased
+                          easily and are known for not being breathable.
+                          Polyester suits tend to have a shine to them compared
+                          to wool and cotton suits, this can make the suit look
+                          cheap. The texture of velvet is luxurious and
+                          breathable. Velvet is a great choice for dinner party
+                          jacket and can be worn all year round.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tabs-6" role="tabpanel">
+                    <div class="product__details__tab__content">
+                      <div class="product__details__tab__content__item">
+                        <h5>Products Infomation</h5>
+                        <p>
+                          A Pocket PC is a handheld computer, which features
+                          many of the same capabilities as a modern PC. These
+                          handy little devices allow individuals to retrieve and
+                          store e-mail messages, create a contact file,
+                          coordinate appointments, surf the internet, exchange
+                          text messages and more. Every product that is labeled
+                          as a Pocket PC must be accompanied with specific
+                          software to operate the unit and must feature a
+                          touchscreen and touchpad.
+                        </p>
+                        <p>
+                          As is the case with any new technology product, the
+                          cost of a Pocket PC was substantial during it’s early
+                          release. For approximately ₹700.00, consumers could
+                          purchase one of top-of-the-line Pocket PCs in 2003.
+                          These days, customers are finding that prices have
+                          become much more reasonable now that the newness is
+                          wearing off. For approximately ₹350.00, a new Pocket
+                          PC can now be purchased.
+                        </p>
+                      </div>
+                      <div class="product__details__tab__content__item">
+                        <h5>Material used</h5>
+                        <p>
+                          Polyester is deemed lower quality due to its none
+                          natural quality’s. Made from synthetic materials, not
+                          natural like wool. Polyester suits become creased
+                          easily and are known for not being breathable.
+                          Polyester suits tend to have a shine to them compared
+                          to wool and cotton suits, this can make the suit look
+                          cheap. The texture of velvet is luxurious and
+                          breathable. Velvet is a great choice for dinner party
+                          jacket and can be worn all year round.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tabs-7" role="tabpanel">
+                    <div class="product__details__tab__content">
+                      <p class="note">
+                        Nam tempus turpis at metus scelerisque placerat nulla
+                        deumantos solicitud felis. Pellentesque diam dolor,
+                        elementum etos lobortis des mollis ut risus. Sedcus
+                        faucibus an sullamcorper mattis drostique des commodo
+                        pharetras loremos.
+                      </p>
+                      <div class="product__details__tab__content__item">
+                        <h5>Products Infomation</h5>
+                        <p>
+                          A Pocket PC is a handheld computer, which features
+                          many of the same capabilities as a modern PC. These
+                          handy little devices allow individuals to retrieve and
+                          store e-mail messages, create a contact file,
+                          coordinate appointments, surf the internet, exchange
+                          text messages and more. Every product that is labeled
+                          as a Pocket PC must be accompanied with specific
+                          software to operate the unit and must feature a
+                          touchscreen and touchpad.
+                        </p>
+                        <p>
+                          As is the case with any new technology product, the
+                          cost of a Pocket PC was substantial during it’s early
+                          release. For approximately ₹700.00, consumers could
+                          purchase one of top-of-the-line Pocket PCs in 2003.
+                          These days, customers are finding that prices have
+                          become much more reasonable now that the newness is
+                          wearing off. For approximately ₹350.00, a new Pocket
+                          PC can now be purchased.
+                        </p>
+                      </div>
+                      <div class="product__details__tab__content__item">
+                        <h5>Material used</h5>
+                        <p>
+                          Polyester is deemed lower quality due to its none
+                          natural quality’s. Made from synthetic materials, not
+                          natural like wool. Polyester suits become creased
+                          easily and are known for not being breathable.
+                          Polyester suits tend to have a shine to them compared
+                          to wool and cotton suits, this can make the suit look
+                          cheap. The texture of velvet is luxurious and
+                          breathable. Velvet is a great choice for dinner party
+                          jacket and can be worn all year round.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="related-products text-center">
+      <h3>Related Products</h3>
+      <div class="row justify-content-center">
+        <% relatedProducts.forEach(relatedProduct => { %>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="product__item border rounded shadow-sm">
+            <div
+              class="product__item__pic set-bg"
+              data-setbg="/uploads/product-images/<%= relatedProduct.productImage[0] %>"
+            >
+              <ul class="product__hover">
+                <li>
+                  <a href="/productPage?id=<%= relatedProduct._id %>"
+                    ><img src="img/icon/heart.png" alt=""
+                  /></a>
+                </li>
+                <li>
+                  <a href="/productPage?id=<%= relatedProduct._id %>"
+                    ><img src="img/icon/search.png" alt=""
+                  /></a>
+                </li>
+              </ul>
+            </div>
+            <div class="product__item__text p-3">
+              <h6 class="product-name">
+                <a
+                  href="/productPage?id=<%= relatedProduct._id %>"
+                  class="text-dark"
+                  style="font-weight: bold"
+                  ><%= relatedProduct.productName %></a
+                >
+              </h6>
+              <h5 class="product-price text-success" style="font-weight: bold">
+                ₹<%= relatedProduct.salePrice.toFixed(2) %>
+              </h5>
+              <a href="#" class="btn add-to-cart-btn">Add to Cart +</a>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <style>
+      body {
+        font-family: "Nunito Sans", sans-serif;
+      }
+      .related-products {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+      }
+      .related-products h3 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+        font-weight: 600;
+      }
+      .product__item {
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .product__item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .add-to-cart-btn {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 5px;
+        display: inline-block;
+      }
+      .zoom-container {
+        position: relative;
+      }
+
+      .zoom-img {
+        transition: transform 0.5s ease;
+      }
+
+      .zoom-lens {
+        position: absolute;
+        border: 1px solid #000;
+        cursor: crosshair;
+        width: 100px;
+        height: 100px;
+        opacity: 0.5;
+        background: rgba(255, 255, 255, 0.5);
+        display: none;
+      }
+
+      .zoom-display {
+        position: relative;
+        border: 1px solid #000;
+        width: 300px;
+        height: 300px;
+        background-color: rgba(255, 255, 255, 1);
+        margin-top: 20px;
+        overflow: hidden;
+      }
+
+      .zoom-result {
+        display: none;
+      }
+    </style>
+
+    <!-- Shop Details Section End -->
+
+    <!-- Related Section Begin -->
+
+    <!-- Related Section End -->
+
+    <script>
+      const zoomContainers = document.querySelectorAll(".zoom-container");
+
+      zoomContainers.forEach((container) => {
+        const zoomImg = container.querySelector(".zoom-img");
+        const zoomLens = container.querySelector(".zoom-lens");
+        const zoomDisplay = document.getElementById("zoom-display");
+
+        container.addEventListener("mousemove", (e) => {
+          zoomLens.style.display = "block";
+
+          const bounds = container.getBoundingClientRect();
+          const x = e.clientX - bounds.left - zoomLens.offsetWidth / 2;
+          const y = e.clientY - bounds.top - zoomLens.offsetHeight / 2;
+
+          zoomLens.style.left = `${x}px`;
+          zoomLens.style.top = `${y}px`;
+
+          const lensWidth = zoomLens.offsetWidth;
+          const lensHeight = zoomLens.offsetHeight;
+
+          const bgX = (x / bounds.width) * 100;
+          const bgY = (y / bounds.height) * 100;
+
+          zoomDisplay.style.backgroundImage = `url(${zoomImg.src})`;
+          zoomDisplay.style.backgroundSize = `${zoomImg.width * 1.5}px ${
+            zoomImg.height * 1.5
+          }px`;
+          zoomDisplay.style.backgroundPosition = `-${bgX}% -${bgY}%`; 
+        });
+
+        container.addEventListener("mouseleave", () => {
+          zoomLens.style.display = "none";
+          zoomDisplay.style.backgroundImage = "";
+        });
+      });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+function checkQuantity(input) {
+    const maxQuantity = 3;
+    if (input.value > maxQuantity) {
+        input.value = maxQuantity; // Reset to max if user exceeds
+        Swal.fire({
+            icon: 'warning',
+            title: 'Quantity Limit',
+            text: "You can't add more than 3 units of this product.",
+        });
+    }
+}
+
+
+function addToCart(productId, quantity) {
+    $.ajax({
+        url: '/addToCart',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ productId, quantity }),
+        success: function(response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: "Product added to cart!",
+                }).then(() => {
+                    window.location.href = '/cart'; // Redirect to cart if successful
+                });
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: response.message, // Display the message from the server
+                }).then(() => {
+                    // Redirect to cart if the product is already in the cart
+                    if (response.redirectToCart) {
+                        window.location.href = '/cart'; // Redirect to the cart page
+                    }
+                });
+            }
+        },
+        error: function(err) {
+            console.error(err);
+            // Handle the error and display the SweetAlert
+            const errorMessage = err.responseJSON?.message || 'Error adding product to cart.';
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage,
+            });
+        }
+    });
+}
+
+
+
+
+// function checkQuantity(input, availableQuantity) {
+//     const selectedQuantity = parseInt(input.value);
+
+//     // Validate selected quantity against available quantity and maximum of 3
+//     if (selectedQuantity > availableQuantity) {
+//         input.value = availableQuantity; // Set to max available if selected exceeds
+//         Swal.fire('Alert', 'You can only select up to ' + availableQuantity + ' items.', 'warning');
+//     } else if (selectedQuantity > 3) {
+//         input.value = 3; // Cap at 3 if selected exceeds 3
+//         Swal.fire('Alert', 'You can only add a maximum of 3 items.', 'warning');
+//     }
+// }
+
+// function addToCart(productId, quantity) {
+//     // Check existing quantity in the cart
+//     $.ajax({
+//         url: '/checkCart', // Create a route to check current product quantity in the cart
+//         method: 'POST',
+//         contentType: 'application/json',
+//         data: JSON.stringify({ productId }),
+//         success: function(cartResponse) {
+//             const currentCartQuantity = cartResponse.currentQuantity || 0;
+//             const totalQuantity = currentCartQuantity + parseInt(quantity);
+
+//             // Check if adding will exceed the limit
+//             if (totalQuantity > 3) {
+//                 Swal.fire('Alert', 'You cannot have more than 3 of this product in your cart.', 'warning');
+//                 return; // Exit if the total exceeds 3
+//             }
+
+//             // Proceed with adding to cart
+//             Swal.fire({
+//                 title: 'Adding to Cart',
+//                 text: 'Are you sure you want to add this product to your cart?',
+//                 icon: 'question',
+//                 showCancelButton: true,
+//                 confirmButtonText: 'Yes, add it!',
+//                 cancelButtonText: 'No, cancel'
+//             }).then((result) => {
+//                 if (result.isConfirmed) {
+//                     $.ajax({
+//                         url: '/addToCart', 
+//                         method: 'POST',
+//                         contentType: 'application/json',
+//                         data: JSON.stringify({ productId, quantity }),
+//                         success: function(response) {
+//                             if (response.success) {
+//                                 Swal.fire('Success!', 'Product added to cart!', 'success');
+//                                 window.location.href = '/cart'; 
+//                             } else {
+//                                 Swal.fire('Error!', response.message, 'error'); 
+//                             }
+//                         },
+//                         error: function(err) {
+//                             console.error(err);
+//                             Swal.fire('Error!', 'Error adding product to cart.', 'error');
+//                         }
+//                     });
+//                 }
+//             });
+//         },
+//         error: function(err) {
+//             console.error(err);
+//             Swal.fire('Error!', 'Error checking cart quantity.', 'error');
+//         }
+//     });
+// }
+
+
+    </script>
+  </body>
+  <%- include('../partials/userfooter')%>
+</html>

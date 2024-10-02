@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body><head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+</head>
+<body>
+    <!-- Page Preloder -->
+    <%- include('../partials/header') %>
+
+
+
+
+<div class="container mt-5"></div>
+    <h2 class="text-center">Edit Address</h2>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <form id="editAddressForm" action="/editAddress?id=<%= address._id %>" method="POST">
+                        <input type="hidden" name="returnTo" value="<%= returnTo %>">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="addressType">Address Type</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="addressType" name="addressType">
+                                            <option value="Home" <%= address.addressType === 'Home' ? 'selected' : '' %>>Home</option>
+                                            <option value="Work" <%= address.addressType === 'Work' ? 'selected' : '' %>>Work</option>
+                                            <option value="Other" <%= address.addressType === 'Other' ? 'selected' : '' %>>Other</option>
+                                        </select>
+                                        <input type="text" class="form-control" id="customAddressType" name="customAddressType" 
+                                               value="<%= address.addressType !== 'Home' && address.addressType !== 'Work' ? address.addressType : '' %>"
+                                               placeholder="Please specify" style="display: <%= address.addressType === 'Other' ? 'block' : 'none' %>">
+                                    </div>
+                                    <small id="error-addressType" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3"> 
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="<%= address.name %>">
+                                    <small id="error-name" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" id="city" name="city" value="<%= address.city %>">
+                                    <small id="error-city" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="state">State</label>
+                                    <select class="form-control" id="state" name="state">
+                                        <option value="" disabled>Select State</option>
+                                        <option value="Andhra Pradesh" <%= address.state === 'Andhra Pradesh' ? 'selected' : '' %>>Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh" <%= address.state === 'Arunachal Pradesh' ? 'selected' : '' %>>Arunachal Pradesh</option>
+                                        <option value="Assam" <%= address.state === 'Assam' ? 'selected' : '' %>>Assam</option>
+                                        <option value="Bihar" <%= address.state === 'Bihar' ? 'selected' : '' %>>Bihar</option>
+                                        <option value="Chhattisgarh" <%= address.state === 'Chhattisgarh' ? 'selected' : '' %>>Chhattisgarh</option>
+                                        <option value="Goa" <%= address.state === 'Goa' ? 'selected' : '' %>>Goa</option>
+                                        <option value="Gujarat" <%= address.state === 'Gujarat' ? 'selected' : '' %>>Gujarat</option>
+                                        <option value="Haryana" <%= address.state === 'Haryana' ? 'selected' : '' %>>Haryana</option>
+                                        <option value="Himachal Pradesh" <%= address.state === 'Himachal Pradesh' ? 'selected' : '' %>>Himachal Pradesh</option>
+                                        <option value="Jharkhand" <%= address.state === 'Jharkhand' ? 'selected' : '' %>>Jharkhand</option>
+                                        <option value="Karnataka" <%= address.state === 'Karnataka' ? 'selected' : '' %>>Karnataka</option>
+                                        <option value="Kerala" <%= address.state === 'Kerala' ? 'selected' : '' %>>Kerala</option>
+                                        <option value="Madhya Pradesh" <%= address.state === 'Madhya Pradesh' ? 'selected' : '' %>>Madhya Pradesh</option>
+                                        <option value="Maharashtra" <%= address.state === 'Maharashtra' ? 'selected' : '' %>>Maharashtra</option>
+                                        <option value="Manipur" <%= address.state === 'Manipur' ? 'selected' : '' %>>Manipur</option>
+                                        <option value="Meghalaya" <%= address.state === 'Meghalaya' ? 'selected' : '' %>>Meghalaya</option>
+                                        <option value="Mizoram" <%= address.state === 'Mizoram' ? 'selected' : '' %>>Mizoram</option>
+                                        <option value="Nagaland" <%= address.state === 'Nagaland' ? 'selected' : '' %>>Nagaland</option>
+                                        <option value="Odisha" <%= address.state === 'Odisha' ? 'selected' : '' %>>Odisha</option>
+                                        <option value="Punjab" <%= address.state === 'Punjab' ? 'selected' : '' %>>Punjab</option>
+                                        <option value="Rajasthan" <%= address.state === 'Rajasthan' ? 'selected' : '' %>>Rajasthan</option>
+                                        <option value="Sikkim" <%= address.state === 'Sikkim' ? 'selected' : '' %>>Sikkim</option>
+                                        <option value="Tamil Nadu" <%= address.state === 'Tamil Nadu' ? 'selected' : '' %>>Tamil Nadu</option>
+                                        <option value="Telangana" <%= address.state === 'Telangana' ? 'selected' : '' %>>Telangana</option>
+                                        <option value="Tripura" <%= address.state === 'Tripura' ? 'selected' : '' %>>Tripura</option>
+                                        <option value="Uttar Pradesh" <%= address.state === 'Uttar Pradesh' ? 'selected' : '' %>>Uttar Pradesh</option>
+                                        <option value="Uttarakhand" <%= address.state === 'Uttarakhand' ? 'selected' : '' %>>Uttarakhand</option>
+                                        <option value="West Bengal" <%= address.state === 'West Bengal' ? 'selected' : '' %>>West Bengal</option>
+                                    </select>
+                                    <small id="error-state" class="text-danger"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" value="<%= address.pincode %>">
+                                    <small id="error-pincode" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" value="<%= address.phone %>">
+                                    <small id="error-phone" class="text-danger"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="email">Email (Optional)</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="<%= address.email %>">
+                                    <small id="error-email" class="text-danger"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="/profile" class="btn btn-outline-secondary">Back to Profile</a>
+                            <button type="submit" class="btn btn-primary">Update Address</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('addressType').addEventListener('change', function() {
+        const customAddressTypeField = document.getElementById('customAddressType');
+        if (this.value === 'Other') {
+            customAddressTypeField.style.display = 'block';
+            customAddressTypeField.focus();
+        } else {
+            customAddressTypeField.style.display = 'none';
+            customAddressTypeField.value = ''; 
+        }
+    });
+
+    const form = document.getElementById('editAddressForm');
+    form.addEventListener('submit', function(event) {
+        let valid = true;
+        document.querySelectorAll('.text-danger').forEach(el => el.innerText = '');
+
+        const addressType = document.getElementById('addressType').value.trim();
+        const customAddressType = document.getElementById('customAddressType').value.trim();
+        const name = document.getElementById('name').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const state = document.getElementById('state').value.trim();
+        const pincode = document.getElementById('pincode').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const email = document.getElementById('email').value.trim();
+
+        if (addressType === '') {
+            document.getElementById('error-addressType').innerText = 'Address Type is required.';
+            valid = false;
+        } else if (addressType === 'Other') {
+            if (customAddressType === '') {
+                document.getElementById('error-addressType').innerText = 'Please specify the address type.';
+                valid = false;
+            } else if (!/^[a-zA-Z\s]+$/.test(customAddressType)) {
+                document.getElementById('error-addressType').innerText = 'Address Type must contain only letters.';
+                valid = false;
+            }
+        }
+
+        if (name === '') {
+            document.getElementById('error-name').innerText = 'Name is required.';
+            valid = false;
+        }
+
+        if (city === '') {
+            document.getElementById('error-city').innerText = 'City is required.';
+            valid = false;
+        }
+
+        if (state === '') {
+            document.getElementById('error-state').innerText = 'State is required.';
+            valid = false;
+        }
+
+        if (pincode === '') {
+            document.getElementById('error-pincode').innerText = 'Pincode is required.';
+            valid = false;
+        } else if (!/^\d{6}$/.test(pincode)) {
+            document.getElementById('error-pincode').innerText = 'Pincode must be 6 digits.';
+            valid = false;
+        }
+
+        if (phone === '') {
+            document.getElementById('error-phone').innerText = 'Phone Number is required.';
+            valid = false;
+        } else if (!/^\d{10}$/.test(phone)) {
+            document.getElementById('error-phone').innerText = 'Phone Number must be 10 digits.';
+            valid = false;
+        }
+
+        if (email && !/\S+@\S+\.\S+/.test(email)) {
+            document.getElementById('error-email').innerText = 'Email format is invalid.';
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    
+    <% if (typeof successMessage !== 'undefined') { %>
+        Swal.fire({
+       
+            icon: 'success',
+            title: 'Success!',
+            text: '<%= successMessage %>',
+            timer:1500,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = '/profile';  
+        });
+    <% } %>
+
+    <% if (typeof errorMessage !== 'undefined') { %>
+        Swal.fire({
+
+            icon: 'error',
+            title: 'Oops...',
+            text: '<%= errorMessage %>',
+            confirmButtonText: 'Try Again'
+        });
+    <% } %>
+</script>

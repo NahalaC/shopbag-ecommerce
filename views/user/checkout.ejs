@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body><head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Male_Fashion Template">
+  <meta name="keywords" content="Male_Fashion, unica, creative, html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shop Bag</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+  <!-- Css Styles -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+  <style>
+    .checkout-container {
+    display: flex; /* Flexbox layout for side-by-side alignment */
+    justify-content: space-between; /* Space between address and order summary */
+    gap: 20px; /* Optional: space between the columns */
+}
+
+.checkout__order {
+    border: 1px solid #ddd; /* Optional: Add border for better visibility */
+    padding: 20px; /* Optional: Add padding */
+    background-color: #fff; /* Optional: Set background color */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+}
+
+.checkout__address-options {
+    border: 1px solid #ddd; /* Optional: Add border for better visibility */
+    padding: 20px; /* Optional: Add padding */
+    background-color: #fff; /* Optional: Set background color */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+}
+
+  </style>
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+    
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Check Out</h4>
+                        <div class="breadcrumb__links">
+                            <a href="/">Home</a>
+                            <a href="shop">Shop</a>
+                            <a href="cart">Cart</a>
+                            <span>Check Out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="checkout__form">
+                <form action="/placeOrder" method="post">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
+                            <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click here</a> to enter your code</h6>
+                            <div class="checkout-container d-flex"> 
+                                <div class="col-lg-6 col-md-6">
+                                    <h6 class="checkout__title">Choose Your Delivery Address</h6>
+                                    <div class="checkout__address-options">
+                                        <% if (addresses.length > 0) { %>
+                                            <% addresses.forEach((address, index) => { %>
+                                                <div class="checkout__address-option p-4">
+                                                    <label for="address<%= index + 1 %>">
+                                                        <input class="form-check-input" type="radio" name="selectedAddressId"
+                                                               id="address<%= index + 1 %>" value="<%= address._id %>" >
+                                                        <strong><%= address.addressType %>: <%= address.name %></strong>
+                                                        <p><%= address.city %>, <%= address.state %>, <%= address.pincode %></p>
+                                                        <p>Phone: <%= address.phone %></p>
+                                                        <button type="button" class="btn btn-link" onclick="window.location.href='/editAddress?id=<%= address._id %>&returnTo=checkout'">Edit</button>
+                                                    </label>
+                                                </div>
+                                            <% }) %>
+                                        <% } else { %>
+
+                                            <button  type="button" class="btn btn-link" onclick="window.location.href='/addAddress?returnTo=checkout'">Address not found Add Address</button> 
+                                            <!-- <a href="/addAddress" class="list-group-item list-group-item-action">
+                                               No Address found Add Address
+                                              </a> -->
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4 col-md-6"> 
+                            <div class="checkout__order">
+                                <h4 class="order__title">Your order</h4>
+                                <div class="checkout__order__products">Product <span>Total</span></div>
+                                <ul class="checkout__total__products">
+                                    <% products.forEach((product, id) => { %>
+                                        <li>
+
+                                             <%= product.productId.productName %>  
+                                                <%= product.quantity %>
+                                            </label>
+                                            <span id="total-price-<%= product._id %>">₹<%= product.totalPrice %>
+                                                <span class="d-none" id="productID">
+                                                    <%= product.productId %>
+                                                </span>
+                                            </span>
+                                        </li>
+                                    <% }); %>
+                                </ul>
+                                <ul class="checkout__total__all">
+                                    <% const subtotal = products.reduce((total, product) => total + product.totalPrice, 0); %>
+                                    <% const shippingCharge = subtotal > 500 ? 60 : 0; %> 
+                                    
+                                    <li>Shipping Charges 
+                                        <span>
+                                            <%= shippingCharge > 0 ? '₹' + shippingCharge.toFixed(2) : 'Free Delivery' %>
+                                        </span>
+                                    </li>
+                                    <hr>
+                                    <li>Subtotal <span id="cart-subtotal">₹<%= subtotal.toFixed(2) %></span></li>
+                                    <li>Total <span id="cart-total">₹<%= (subtotal + shippingCharge).toFixed(2) %></span></li>
+                                </ul>
+                                <div class="checkout__input__checkbox">
+                                    <label for="payment-COD">
+                                        Cash On Delivery
+                                        <input type="radio" id="payment-COD" name="payment-method" checked>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="checkout__input__checkbox">
+                                    <label for="payment-RazorPay">
+                                        Online
+                                        <input type="radio" id="payment-RazorPay" name="payment-method">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button type="button" class="site-btn" onclick="placeOrder()" id="placeOrderButton">PLACE ORDER</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Checkout Section End -->
+
+   
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.countdown.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <script>
+    
+
+    function placeOrder() {
+       
+        const selectedAddressId = document.querySelector('input[name="selectedAddressId"]:checked');
+        if (!selectedAddressId) {
+            alert("Please select a delivery address.");
+            return;
+        }
+
+      
+        const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked').id;
+
+       
+        const cartItems =<%- JSON.stringify(products) %>; 
+        const subtotal = <%-subtotal.toFixed(2) %>;
+        const shippingCharge = <%- shippingCharge.toFixed(2) %>;
+        const total = (parseFloat(subtotal) + parseFloat(shippingCharge)).toFixed(2);
+
+      
+        axios.post('/placeOrder', {
+            addressId: selectedAddressId.value,
+            paymentMethod: selectedPaymentMethod,
+            cartItems,
+            subtotal,
+            shippingCharge,
+            total: total
+        })
+        .then(response => {
+            if (response.data.success) {
+                window.location.href = `/orderSuccess?orderId=${response.data.orderId}`; 
+            } else {
+                alert(response.data.message || "Failed to place the order. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error placing order:", error);
+            alert("An error occurred while placing the order.");
+        });
+    }
+
+
+
+    </script>
+    <%- include('../partials/userfooter')%>
+</body>
+
+</html>

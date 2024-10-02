@@ -1,19 +1,56 @@
 const express = require('express');
-const adminRoute = express.Router();
+const router = express.Router();
 const adminController = require('../controllers/admin/adminController');
-const { adminauthentication } = require('../middlewares/adminAuthenticated');
+const { userAuth, adminAuth } = require('../middlewares/auth');
+const customerController = require('../controllers/admin/customerController');
+const categoryController = require('../controllers/admin/categoryController')
+const productController = require("../controllers/admin/productController");
+const uploads = require("../middlewares/fileuploadmulter");
+const orderController=require("../controllers/admin/orderController")
+router.get("/pageError", adminController.pageError)
+//login management
+router.get('/login', adminController.loadAdmin);
+router.post('/login', adminController.login)
+router.get("/dashboard", adminAuth, adminController.loadDashboard)
 
-adminRoute.use(express.urlencoded({ extended: true }));
 
-// Admin Login Page
-adminRoute.get('/adminLogin', adminController.renderAdminLogin);
+router.get("/logout", adminController.logout);
 
-// Admin Login Handling
-adminRoute.post('/adminLogin', adminController.adminLogin);
+//Customer management
+router.get("/users", adminAuth, customerController.customerInfo)
+router.get("/blockCustomer", adminAuth, customerController.customerBlocked)
+router.get("/unblockCustomer", adminAuth, customerController.customerunBlocked)
 
-// Admin Dashboard (protected route)
-adminRoute.get('/dashboard', adminauthentication, (req, res) => {
-    res.render('admin/dashboard');
-});
 
-module.exports = adminRoute;
+//category management
+
+
+router.get("/categories", adminAuth, categoryController.categoryInfo);
+router.post("/addCategories", adminAuth, categoryController.addCategory);
+router.get("/listCategory", adminAuth, categoryController.getListCategory);
+router.get("/unlistCategory", adminAuth, categoryController.getUnlistCategory);
+router.get("/editCategory", adminAuth, categoryController.getEditCategory);
+router.post("/editCategory/:id", adminAuth, categoryController.editCategory)
+
+//product management
+
+
+router.get("/addProduct", adminAuth, productController.getProductAddPage);
+router.post("/addProduct", adminAuth, uploads.array("images", 4), productController.addProducts);
+router.get("/products", adminAuth, productController.getAllproducts);
+router.get("/listProduct", adminAuth, productController.listProduct);
+router.get("/unlistProduct", adminAuth, productController.unlistProduct);
+router.get("/editProduct", adminAuth, productController.getEditProduct);
+router.post("/editProduct", adminAuth, uploads.array("images", 4), productController.editProduct);
+router.post("/deleteImage", adminAuth, productController.deleteSingleImage);
+
+
+//order  management
+
+router.get("/orders",adminAuth,orderController.orderInfo)
+router.post("/updateOrderStatus",adminAuth,orderController.updateOrderStatus)
+
+
+
+module.exports = router;
+
