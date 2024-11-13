@@ -21,6 +21,8 @@
             }
         </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     </head>
     <section class="content-main">
         <div class="row">
@@ -139,6 +141,7 @@
                                     <% } %>
                             </div>
 
+
                             <div class="card-body">
                                 <div class="card-body align-items-center" style="margin-bottom: 20px;">
                                     <img src="" alt="" id="imgView1">
@@ -208,85 +211,94 @@
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+
     <script>
-
-        function validateAndSubmit() {
-            if (validateForm()) {
-                console.log('dfjbid')
-                document.getElementById('myForm').submit();
-            }
+          function validateAndSubmit() {
+        if (validateForm()) {
+            document.getElementById('myForm').submit();
         }
-
-
-        function validateForm() {
-            let imageDatas = false
-            console.log("validate form");
-            clearErrorMessages();
-            const name = document.getElementsByName('productName')[0].value;
-            const description = document.getElementsByName('descriptionData')[0].value;
-           
-            const price = document.getElementsByName('regularPrice')[0].value;
-            const saleprice = document.getElementsByName('salePrice')[0].value;
-            const color = document.getElementsByName('color')[0].value;
-            const category = document.getElementsByName('category')[0].value;
-            const images = document.getElementById('input1')
-            const quantity = document.getElementsByName('quantity').value;
-            imageDatas = document.getElementById("imageDatas")?.value;
-            console.log(name,description,price,color,category,images,quantity,imageDatas)
-            let isValid = true;
-            if (name.trim() === "") {
-                displayErrorMessage('productName-error', 'Please enter a product name.');
-                isValid = false;
-            }
-
-            if (description === '') {
-                displayErrorMessage('description-error', 'Please enter a product description.');
-                isValid = false;
-            }
-
-            if (parseInt(quantity) < 0) {
-                displayErrorMessage('quantity-error', 'Please enter a valid non-negative quantity.');
-                isValid = false;
-            }
-
-
-            if (!/^\d+(\.\d{1,2})?$/.test(price) || parseFloat(price) < 0) {
-                displayErrorMessage('regularPrice-error', 'Please enter a valid non-negative price.');
-                isValid = false;
-            }
-            if (!/^\d+(\.\d{1,2})?$/.test(saleprice) || parseFloat(saleprice) < 0) {
-                displayErrorMessage('salePrice-error', 'Please enter a valid non-negative price.');
-                isValid = false;
-            }
-
-            if (color.trim() === "") {
-                displayErrorMessage('color-error', 'Please enter a color.');
-                isValid = false;
-            }
-            if (!imageDatas && images.files.length === 0) {
-                displayErrorMessage("images-error", 'Please select an image.');
-                isValid = false;
-            }
-            return isValid
+    }
+    
+    function validateForm() {
+        clearErrorMessages();
+    
+        const name = document.getElementsByName('productName')[0].value;
+        const description = document.getElementsByName('descriptionData')[0].value;
+        const price = document.getElementsByName('regularPrice')[0].value;
+        const saleprice = document.getElementsByName('salePrice')[0].value;
+        const color = document.getElementsByName('color')[0].value;
+        const category = document.getElementsByName('category')[0].value;
+        const images = document.getElementById('input1');
+        const quantity = document.getElementsByName('quantity')[0].value;
+        const existingImage = document.getElementById("imageDatas")?.value;
+    
+        let isValid = true;
+    
+    
+        if (name.trim() === "" || name.length < 3 || /^[0-9]+$/.test(name)) {
+            displayErrorMessage('productName-error', 'Product enter a valid product name ');
+            isValid = false;
         }
-
-        function displayErrorMessage(elementId, message) {
-            var errorElement = document.getElementById(elementId);
-            errorElement.innerText = message;
-            errorElement.style.display = "block";
+    
+        
+        if (description.trim() === ""||/^[0-9]+$/.test(description)) {
+            displayErrorMessage('description-error', 'Please enter valid product description.');
+            isValid = false;
         }
-
-        function clearErrorMessages() {
-            const errorElements = document.getElementsByClassName('error-message');
-            Array.from(errorElements).forEach(element => {
-                element.innerText = '';
-            });
-            const errorMessage = document.getElementById('errorMessage');
-
+    
+        
+        if (parseInt(quantity) < 0 || !/^\d+$/.test(quantity)) {
+            displayErrorMessage('quantity-error', 'Please enter a valid non-negative quantity.');
+            isValid = false;
         }
+    
+        
+        if (!/^\d+(\.\d{1,2})?$/.test(price) || parseFloat(price) < 0) {
+            displayErrorMessage('regularPrice-error', 'Please enter a valid non-negative price.');
+            isValid = false;
+        }
+    
+    
+        if (!/^\d+(\.\d{1,2})?$/.test(saleprice) || parseFloat(saleprice) < 0) {
+            displayErrorMessage('salePrice-error', 'Please enter a valid non-negative sale price.');
+            isValid = false;
+        }
+    
+        
+        if (!/^[A-Za-z]+$/.test(color.trim())) {
+    displayErrorMessage('color-error', 'Please enter a valid color (alphabets only).');
+    isValid = false;
+}
 
+    
+if (!existingImage && (!images.files || images.files.length < 3)) {
+    displayErrorMessage("images-error", 'Please select at least three images.');
+    isValid = false;
+}
 
-        function viewImage1(event) {
+    
+        return isValid;
+
+    }
+    
+    function displayErrorMessage(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        errorElement.innerText = message;
+        errorElement.style.display = "block";
+    }
+    
+    function clearErrorMessages() {
+        const errorElements = document.getElementsByClassName('error-message');
+        Array.from(errorElements).forEach(element => {
+            element.innerText = '';
+            element.style.display = "none";
+        });
+    }
+
+    function viewImage1(event) {
             document.getElementById('imgView1').src = URL.createObjectURL(event.target.files[0])
         }
 
@@ -372,21 +384,46 @@
                 addedImagesContainer.appendChild(thumbnail);
             }
         };
+
         function deleteSingleImage(imageId, productId) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this image!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it'
+    }).then((willDelete) => {
+        if (willDelete.isConfirmed) {  // Checks if the user confirmed
             $.ajax({
                 url: "/admin/deleteImage",
-                method: 'post',
+                method: 'POST',
                 data: { imageNameToServer: imageId, productIdToServer: productId },
-                success: ((response) => {
+                success: (response) => {
                     if (response.status === true) {
-                        window.location.reload();
+                        Swal.fire("Deleted!", "The image has been deleted.", "success")
+                            .then(() => {
+                                window.location.reload();
+                            });
+                    } else {
+                        Swal.fire("Error!", "Something went wrong. Please try again.", "error");
                     }
-                })
-            })
+                },
+                error: () => {
+                    Swal.fire("Error!", "Something went wrong. Please try again.", "error");
+                }
+            });
+        } else {
+            Swal.fire("The image was not deleted.");
         }
+    });
+}
 
+    
     </script>
-
+  
 
 
     <%- include('../partials/adminFooter') %>
+
+               

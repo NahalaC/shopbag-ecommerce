@@ -1,10 +1,5 @@
 <%- include('../partials/adminHeader') %>
 
-
-
-
-
-
 <div class="card-body">
     <div class="table-responsive">
         <table class="table table-hover">
@@ -17,6 +12,7 @@
                             <th>Date of Order</th>
                             <th>User Name</th>
                             <th>Payment Method</th>
+                            <th>Payment Status</th>
                             <th>Total Price</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -26,25 +22,54 @@
                         <% orders.forEach(order => { %>
                             <tr class="text-center">
                                 <td><%= order.orderId %></td>
-                                <td><%= new Date(order.createOn).toLocaleDateString() %></td>
+                                <td> <%= new Date(order.createdOn).toLocaleString() %></td>
                                 <td><%= order.userId ? order.userId.name : 'N/A' %></td> 
                                 <td><%= order.paymentMethod || 'N/A' %></td> 
+                                <td><%= order.paymentStatus || 'N/A' %></td> 
+
                                 <td>₹<%= order.totalPrice.toFixed(2) %></td> 
                                 <td>
                                     <form action="/admin/updateOrderStatus" method="POST">
                                         <input type="hidden" name="orderId" value="<%= order._id %>">
-                                        <select name="status" onchange="this.form.submit()">
-                                            <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
-                                            <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-                                            <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                                            <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
-                                            <option value="Return Request" <%= order.status === 'Return Request' ? 'selected' : '' %>>Return Request</option>
-                                            <option value="Returned" <%= order.status === 'Returned' ? 'selected' : '' %>>Returned</option>
-                                        </select>
+                                        
+                                        <% if (order.status === 'Pending') { %>
+                                            <select name="status" onchange="this.form.submit()">
+                                                <option value="Pending" selected>Pending</option>
+                                                <option value="Shipped">Shipped</option>
+                                                <option value="Cancelled">Cancelled</option>
+                                            </select>
+                                            
+                                        <% } else if (order.status === 'Shipped') { %>
+                                            <select name="status" onchange="this.form.submit()">
+                                                <option value="Shipped" selected>Shipped</option>
+                                                <option value="Delivered">Delivered</option>
+                                            </select>
+                                            
+                                        <% } else if (order.status === 'Delivered') { %>
+                                            <select name="status" disabled>
+                                                <option value="Delivered" selected>Delivered</option>
+                                            </select>
+                                            
+                                        <% } else if (order.status === 'Return Request') { %>
+                                            <!-- Allow only 'Returned' -->
+                                            <select name="status" onchange="this.form.submit()">
+                                                <option value="Return Request" selected>Return Request</option>
+                                                <option value="Returned">Returned</option>
+                                            </select>
+                                            
+                                        <% } else if (order.status === 'Returned' || order.status === 'Cancelled') { %>
+                                            <!-- Terminal statuses -->
+                                            <select name="status" disabled>
+                                                <option value="<%= order.status %>" selected><%= order.status %></option>
+                                            </select>
+                                            
+                                        <% } %>
                                     </form>
                                 </td>
-                                <td>
-                                    <a href="/admin/orders/<%= order._id %>" class="btn btn-info">View</a>
+                                
+                                <td class="text-center">
+                                    <a href="/admin/orderDetails?orderId=<%= order._id %>"
+                                        class="btn btn-primary rounded-0 text-white shadow-sm">View</a>
                                 </td>
                             </tr>
                         <% }) %>
@@ -64,22 +89,7 @@
                 
             </div>
             
-           
-              
-              
-              
-                
-               
-                
-               
-              
-              
-               
-               
-               
-               
-            
-        </table>
+          </table>
     </div> 
 </div>
 

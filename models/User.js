@@ -46,8 +46,8 @@ const userSchema = new Schema({
       ref: 'Cart',
    }],
    wallet: {
-      type: Number,
-      default: 0,
+      type: Schema.Types.ObjectId,
+      ref: 'Wallet',
 
    },
    wishlist: [{
@@ -61,16 +61,16 @@ const userSchema = new Schema({
    }],
    referalCode: {
       type: String,
-      //required:false
+     
    },
    redeemed: {
       type: Boolean,
-      //default:false
+      
    },
    redeemedUsers: [{
       type: Schema.Types.ObjectId,
       ref: 'User',
-      //required:true
+    
 
    }],
    searchHistory: [{

@@ -2,7 +2,9 @@ const bcrypt = require("bcrypt");
 const User = require("../../models/User");
 const Category = require("../../models/Categorymodel");
 const Product = require("../../models/Productmodel");
+const Wishlist = require("../../models/wishlistModel");
 const OTPModel = require("../../models/OTP");
+const Wallet = require("../../models/walletModel")
 const passport = require("passport");
 const nodemailer = require("nodemailer");
 const { response } = require("express");
@@ -24,42 +26,58 @@ const pageNotFound = async (req, res) => {
 const loadHomepage = async (req, res) => {
     try {
         const user = req.session.user;
+
+
         const products = await Product.find({ isBlocked: false }).populate({
             path: "category",
             match: { isBlocked: false },
         });
 
+
         const category = await Category.find({}).sort({ name: 1 });
+
+
         const newArrivals = await Product.find({ isBlocked: false })
             .populate({ path: "category", match: { isBlocked: false } })
             .sort({ createdAt: -1 });
+
+
         const filteredProductNewArrivals = newArrivals.filter(
             (product) => product.category
         );
-        if (user) {
-            const userData = await User.findOne({
-                _id: new mongoose.Types.ObjectId(user.id),
-            });
 
-            console.log("userdata", userData);
-            res.render("user/index", {
-                user: userData,
-                products: products,
-                categories: category,
-                newArrivals: newArrivals,
-            });
-        } else {
-            return res.render("user/index", {
-                products: products,
-                categories: category,
-                newArrivals: filteredProductNewArrivals,
-            });
+
+        let wishlistProductIds = [];
+
+
+        if (user) {
+            const wishlist = await Wishlist.findOne({ user: user.id });
+            wishlistProductIds = wishlist ? wishlist.products.map(item => item.productId.toString()) : [];
         }
+
+        const banners = [
+            { img: '/img/hero/banner-1.png', alt: 'Banner 1' },
+            { img: '/img/hero/banner-2.jpg', alt: 'Banner 2' },
+            { img: '/img/hero/bannner-4.jpg', alt: 'Banner 3' },
+
+        ];
+
+        res.render("user/index", {
+            user: user ? await User.findById(user.id) : null,
+            products: products,
+            categories: category,
+            newArrivals: filteredProductNewArrivals,
+            wishlistProductIds,
+            banners
+        });
+
     } catch (error) {
-        console.log("Home pafe not loading", error);
+        console.log("Home page not loading", error);
         res.status(500).send("Server Error");
     }
 };
+
+
 
 //  signup page
 const loadSignup = async (req, res) => {
@@ -146,47 +164,93 @@ const securePassword = async (password) => {
     }
 };
 
+
+const generateReferralCode = () => {
+    return Math.random().toString(36).substring(2, 8).toUpperCase();
+};
+
 const verifyOTP = async (req, res) => {
     try {
-        console.log(req.body.otp, "body");
         const otp = req.body.otp;
-        console.log("OTP received:", otp);
-
         const sessionOtp = req.session.userOtp;
         const userData = req.session.userData;
 
         if (!sessionOtp || !userData) {
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    message: "Session expired. Please try again.",
-                });
+            return res.status(400).json({
+                success: false,
+                message: "Session expired. Please try again.",
+            });
         }
 
         if (otp === sessionOtp) {
             const existingUser = await User.findOne({ email: userData.email });
             if (existingUser) {
-                console.log("User already exists");
-                return res
-                    .status(400)
-                    .json({
-                        success: false,
-                        message: "User with this email already exists. Please log in.",
-                    });
+                return res.status(400).json({
+                    success: false,
+                    message: "User with this email already exists. Please log in.",
+                });
             }
 
-            const passwordHash = await securePassword(userData.password);
+            const passwordHash = await bcrypt.hash(userData.password, 10);
+            const referralCode = generateReferralCode();
+            let walletBalance = 10;
+            let referrerBonus = 10;
+
+
+            let referrer;
+            if (userData.referredBy) {
+                referrer = await User.findOne({ referalCode: userData.referredBy });
+
+                if (referrer) {
+
+                    let referrerWallet = await Wallet.findOne({ userId: referrer._id });
+                    if (!referrerWallet) {
+                        referrerWallet = new Wallet({ userId: referrer._id, balance: referrerBonus });
+                    } else {
+                        referrerWallet.balance += referrerBonus;
+                    }
+
+                    referrerWallet.transactions.push({
+                        amount: referrerBonus,
+                        type: 'credit',
+                        description: 'Referral bonus for inviting a new user',
+                    });
+                    await referrerWallet.save();
+
+
+                    walletBalance += referrerBonus;
+
+
+                }
+            }
+
 
             const saveUserdata = new User({
                 name: userData.name,
                 email: userData.email,
                 phone: userData.phone,
                 password: passwordHash,
+                referalCode: referralCode,
             });
-
             await saveUserdata.save();
-            console.log("usersaved", saveUserdata);
+
+
+            const newUserWallet = new Wallet({
+                userId: saveUserdata._id,
+                balance: walletBalance,
+                transactions: [
+                    {
+                        amount: walletBalance,
+                        type: 'credit',
+                        description: 'Initial sign-up bonus',
+                    },
+                ],
+            });
+            await newUserWallet.save();
+
+
+            saveUserdata.wallet = newUserWallet._id;
+            await saveUserdata.save();
 
             req.session.user = {
                 id: saveUserdata._id,
@@ -197,21 +261,18 @@ const verifyOTP = async (req, res) => {
             req.session.userOtp = null;
             req.session.userData = null;
 
-            console.log("User stored in session:", req.session.user);
-
             res.status(200).json({ success: true, redirectUrl: "/" });
         } else {
-            return res
-                .status(200)
-                .json({ success: false, message: "Invalid OTP, please try again." });
+            return res.status(200).json({ success: false, message: "Invalid OTP, please try again." });
         }
     } catch (error) {
         console.error("Error verifying OTP:", error);
-        return res
-            .status(500)
-            .json({ success: false, message: "An error occurred." });
+        return res.status(500).json({ success: false, message: "An error occurred." });
     }
 };
+
+
+
 
 const resendOTP = async (req, res) => {
     try {
@@ -358,172 +419,105 @@ const loadProductPage = async (req, res) => {
     }
 };
 
-// const loadShop = async (req, res) => {
-//     console.log("Reached shop");
 
-//     try {
-//         const user = req.session.user;
 
-//         const {
-//             sort = "",
-//             order = "",
-//             category: selectedCategory = "",
-//         } = req.query;
 
-//         // Initialize sorting options
-//         let sortOptions = {};
-//         if (sort) {
-//             sortOptions[sort] = order === "asc" ? 1 : -1; // Generalized sorting
-//         }
 
-//         // Build the query object
-//         let query = { isBlocked: false };
-//         if (selectedCategory) {
-//             query.category = selectedCategory; // Filter by category if selected
-//         }
-
-//         // Fetch products based on the query and sorting options
-//         const products = await Product.find(query)
-//             .populate({
-//                 path: "category",
-//                 match: { isListed: true },
-//             })
-//             .sort(sortOptions);
-
-//         // Filter out products that have a blocked category
-//         const filteredProducts = products.filter((product) => product.category);
-
-//         // Fetch listed categories for the dropdown
-//         const categories = await Category.find({ isListed: true }).sort({ name: 1 });
-
-//         // Fetch new arrivals
-//         const newArrivals = await Product.find({ isBlocked: false })
-//             .populate({
-//                 path: "category",
-//                 match: { isListed: true },
-//             })
-//             .sort({ createdAt: -1 });
-
-//         // Filter new arrivals for valid categories
-//         const filteredProductNewArrivals = newArrivals.filter(
-//             (product) => product.category
-//         );
-
-//         // Render the shop page with user data if available
-//         const renderData = {
-//             products: filteredProducts,
-//             categories,
-//             newArrivals: filteredProductNewArrivals,
-//             selectedCategory,
-//             sort,
-//             order,
-//         };
-
-//         if (user) {
-//             const userData = await User.findById(user.id); // More concise
-//             console.log("User data", userData);
-//             renderData.user = userData; // Add user data to render data
-//         }
-
-//         return res.render("user/shop", renderData); // Render the page with consolidated data
-//     } catch (error) {
-//         console.log("Shop page not loading", error);
-//         res.status(500).send("Server Error");
-//     }
-// };
 const loadShop = async (req, res) => {
-    console.log("Reached shop");
-
     try {
         const user = req.session.user;
+        const searchQuery = req.query.search || '';
+        const { sort = "", order = "", category: selectedCategory = "", page = 1 } = req.query;
 
-        const {
-            sort = "",
-            order = "",
-            category: selectedCategory = "",
-            page = 1,
-            search = "", 
-        } = req.query;
+        const limit = 4;
+        const skip = (page - 1) * limit;
 
-        const limit = 4; 
-        const skip = (page - 1) * limit; 
 
-        
-        let sortOptions = {};
-        if (sort) {
-            sortOptions[sort] = order === "asc" ? 1 : -1; 
-        }
-
-       
         let query = { isBlocked: false };
-        if (search) {
-            query.productName = { $regex: new RegExp(search, "i") };
+        if (searchQuery) {
+            query.productName = { $regex: new RegExp(searchQuery, "i") };
         }
         if (selectedCategory) {
-            query.category = selectedCategory; 
+            query.category = selectedCategory;
         }
 
-      
-        const products = await Product.find(query)
-            .populate({
-                path: "category",
-                match: { isListed: true },
-            })
-            .sort(sortOptions)
-            .skip(skip) 
-            .limit(limit);
+        let products = [];
+        if (sort === 'popularity') {
+            products = await Product.aggregate([
+                { $match: query },
+                {
+                    $lookup: {
+                        from: 'orders',
+                        localField: '_id',
+                        foreignField: 'products.product',
+                        as: 'orderData'
+                    }
+                },
+                {
+                    $addFields: {
+                        orderCount: { $size: "$orderData" }
+                    }
+                },
+                {
+                    $sort: { orderCount: -1 }
+                },
+                { $skip: skip },
+                { $limit: limit }
+            ]);
+        } else {
+            let sortOptions = {};
+            if (sort === 'salePrice') {
+                sortOptions['salePrice'] = order === 'asc' ? 1 : -1;
+            } else if (sort === 'productName') {
+                sortOptions['productName'] = order === 'asc' ? 1 : -1;
+            }
 
-        // Filter out products that have a blocked category
+            products = await Product.find(query)
+                .populate({
+                    path: "category",
+                    match: { isListed: true },
+                })
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(limit);
+        }
+
         const filteredProducts = products.filter((product) => product.category);
 
-        // Fetch the total number of products for pagination
-        const totalProducts = await Product.countDocuments(query); // Ensure totalProducts is calculated
-        const totalPages = Math.ceil(totalProducts / limit); // Calculate total pages
+        const totalProducts = await Product.countDocuments(query);
+        const totalPages = Math.ceil(totalProducts / limit);
 
-        // Fetch listed categories for the dropdown
         const categories = await Category.find({ isListed: true }).sort({ name: 1 });
 
-        // Fetch new arrivals
-        const newArrivals = await Product.find({ isBlocked: false })
-            .populate({
-                path: "category",
-                match: { isListed: true },
-            })
-            .sort({ createdAt: -1 })
-            .limit(limit); // Limit to new arrivals
-
-        // Filter new arrivals for valid categories
-        const filteredProductNewArrivals = newArrivals.filter(
-            (product) => product.category
-        );
-
-        // Render the shop page with user data if available
-        const renderData = {
+        let wishlistProductIds = [];
+        let userData = null;
+        if (user) {
+            userData = await User.findById(user.id);
+            if (!userData) {
+                console.error('User not found in database:', user.id);
+                return res.status(404).send('User not found');
+            }
+            const wishlist = await Wishlist.findOne({ user: user.id });
+            wishlistProductIds = wishlist ? wishlist.products.map(item => item.productId.toString()) : [];
+        }
+        res.render("user/shop", {
+            user: userData,
             products: filteredProducts,
             categories,
-            newArrivals: filteredProductNewArrivals,
             selectedCategory,
             sort,
             order,
-            currentPage: parseInt(page), // Current page number
-            totalPages, // Total number of pages
-            totalProducts, // Total products for the pagination display
-        };
-
-        if (user) {
-            const userData = await User.findById(user.id); // More concise
-            console.log("User data", userData);
-            renderData.user = userData; // Add user data to render data
-        }
-
-        return res.render("user/shop", renderData); // Render the page with consolidated data
+            currentPage: parseInt(page),
+            totalPages,
+            totalProducts,
+            wishlistProductIds,
+            searchQuery,
+        });
     } catch (error) {
         console.log("Shop page not loading", error);
         res.status(500).send("Server Error");
     }
 };
-
-
 
 
 module.exports = {

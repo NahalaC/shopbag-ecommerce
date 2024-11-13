@@ -56,7 +56,7 @@
     const name = document.getElementsByName("categoryName")[0].value;
     const description = document.getElementById("descriptionId").value;
 
-    // Using fetch for Ssnding request to the server
+    
     fetch("/admin/editCategory/<%= category._id %>", {
       method: "POST",
       headers: {

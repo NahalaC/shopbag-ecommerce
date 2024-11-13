@@ -194,13 +194,13 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="cart__discount">
+                    <!-- <div class="cart__discount">
                         <h6>Discount codes</h6>
                         <form action="#">
                             <input type="text" placeholder="Coupon code">
                             <button type="submit">Apply</button>
                         </form>
-                    </div>
+                    </div> -->
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
@@ -279,7 +279,7 @@
     const newQuantity = parseInt(quantityInput.value, 10);
     const pricePerItem = parseFloat(quantityInput.getAttribute("data-price")); 
 
-    // Validate quantity against max limit
+
     if (newQuantity > 3) {
         quantityInput.value = 3; 
         Swal.fire({
@@ -290,34 +290,34 @@
         return; 
     }
 
-    // Update individual item's total price
+   
     const totalPrice = newQuantity * pricePerItem;
     const totalPriceElement = quantityInput.closest('tr').querySelector('.total-price span'); 
     totalPriceElement.textContent = totalPrice.toFixed(2); 
 
-    // Update the cart and recalculate the overall total
+  
     const cartItems = document.querySelectorAll('.quantity-input');
     let subtotal = 0;
 
     cartItems.forEach(item => {
         const itemQuantity = parseInt(item.value, 10);
         const itemPrice = parseFloat(item.getAttribute("data-price")); 
-        subtotal += itemQuantity * itemPrice; // Calculate subtotal
+        subtotal += itemQuantity * itemPrice; 
     });
 
     
     const shippingCharge = subtotal > 500 ? 50 : 0;
     const total = subtotal + shippingCharge;
 
-    // Update subtotal and total in the DOM
+    
     document.querySelector('.cart__total .subtotal').textContent = `₹ ${subtotal.toFixed(2)}`;
     document.querySelector('.cart__total .shipping-charge').textContent = `₹ ${shippingCharge.toFixed(2)}`;
     document.querySelector('.cart__total .total').textContent = `₹ ${total.toFixed(2)}`;
 
-    // Prepare data for updating the cart
+   
     const quantities = { [productId]: newQuantity };
 
-    // Send the update request to the server
+    
     fetch('/updateCart', {
         method: 'POST',
         headers: {

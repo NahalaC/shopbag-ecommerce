@@ -88,18 +88,69 @@ const addProducts = async (req, res) => {
 
 
 //to show poroducts page 
+// const getAllproducts = async (req, res) => {
+//     try {
+//         const search = req.query.search || "";
+//         const page = parseInt(req.query.page) || 1;
+//         const limit = 5;
+
+
+//         const productData = await Product.find({
+//             $and: [
+//                 { status: { $ne: 'Discontinued' } },
+//                 { productName: { $regex: new RegExp(".*" + search + ".*", "i") } }
+//             ]
+//         })
+//             .populate({
+//                 path: 'category',
+//                 match: { isListed: true },
+//             })
+//             .limit(limit)
+//             .skip((page - 1) * limit)
+//             .exec();
+
+
+//         const filteredProducts = productData.filter(product => product.category);
+
+
+//         const count = filteredProducts.length;
+
+//         const categories = await category.find({ isListed: true });
+
+//         if (categories) {
+//             res.render("admin/products", {
+//                 data: filteredProducts,
+//                 currentPage: page,
+//                 totalPages: Math.ceil(count / limit),
+//                 cat: categories,
+//             });
+//         } else {
+//             res.render("user/page-404");
+//         }
+
+//     } catch (error) {
+//         console.error(error.message, "Error in getAllproducts");
+//         res.redirect("/pageError");
+//     }
+// };
 const getAllproducts = async (req, res) => {
     try {
         const search = req.query.search || "";
         const page = parseInt(req.query.page) || 1;
         const limit = 5;
 
+        // Get the count of products that match the search criteria without limit/skip
+        const totalProducts = await Product.countDocuments({
+            status: { $ne: 'Discontinued' },
+            productName: { $regex: new RegExp(".*" + search + ".*", "i") }
+        }).populate({
+            path: 'category',
+            match: { isListed: true },
+        });
 
         const productData = await Product.find({
-            $and: [
-                { status: { $ne: 'Discontinued' } },
-                { productName: { $regex: new RegExp(".*" + search + ".*", "i") } }
-            ]
+            status: { $ne: 'Discontinued' },
+            productName: { $regex: new RegExp(".*" + search + ".*", "i") }
         })
             .populate({
                 path: 'category',
@@ -109,11 +160,7 @@ const getAllproducts = async (req, res) => {
             .skip((page - 1) * limit)
             .exec();
 
-
         const filteredProducts = productData.filter(product => product.category);
-
-
-        const count = filteredProducts.length;
 
         const categories = await category.find({ isListed: true });
 
@@ -121,7 +168,7 @@ const getAllproducts = async (req, res) => {
             res.render("admin/products", {
                 data: filteredProducts,
                 currentPage: page,
-                totalPages: Math.ceil(count / limit),
+                totalPages: Math.ceil(totalProducts / limit),
                 cat: categories,
             });
         } else {
@@ -248,6 +295,7 @@ const editProduct = async (req, res) => {
     }
 };
 
+
 const deleteSingleImage = async (req, res) => {
     console.log("Reached image delete");
     try {
@@ -255,21 +303,20 @@ const deleteSingleImage = async (req, res) => {
 
         await Product.findByIdAndUpdate(productIdToServer, { $pull: { productImage: imageNameToServer } });
 
-
         const imagePath = path.join("public", "uploads", "product-images", imageNameToServer);
 
         if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);
             console.log(`Image ${imageNameToServer} deleted successfully`);
+            return res.status(200).json({ status: true, message: 'Image deleted successfully' });
         } else {
             console.log(`Image ${imageNameToServer} not found`);
+            return res.status(404).json({ status: false, message: 'Image not found' });
         }
-
-        res.status(200).json({ message: 'Image deleted successfully' });
 
     } catch (error) {
         console.error("Error deleting image:", error);
-        res.redirect("/pageError");
+        res.status(500).json({ status: false, message: 'Server error' });
     }
 };
 

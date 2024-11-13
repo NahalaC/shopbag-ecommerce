@@ -1,0 +1,205 @@
+<%- include('../partials/adminHeader') %>
+
+
+    <style>
+        .container {
+            margin-top: 30px;
+        }
+
+        .order-items,
+        .order-summary {
+            margin-bottom: 20px;
+        }
+
+        .list-group-item {
+            border: none;
+        }
+
+
+        .order-item-images img {
+            max-width: 100%;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .address p {
+            padding-bottom: 10px;
+
+        }
+
+        .order-summary .card {
+            background-color: #f8f9fa;
+        }
+
+        .order-summary div p {
+            padding-bottom: 10px;
+        }
+
+        .btn-cancel {
+            float: right;
+        }
+
+        .card p {
+            margin: 0;
+        }
+    </style>
+
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <h1 class="text-center">Your Order Details</h1>
+                <nav></nav>
+            </div>
+        </header>
+    
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <!-- Order Items Section -->
+                    <div class="order-items card p-3">
+                        <h3 class="text-center mb-3">Order Items</h3>
+                        <hr />
+                        <ul class="list-group">
+                            <% order.orderedItems.forEach(item => { %>
+                                <li class="list-group-item d-flex cursor-pointer" onclick="window.location.href='/singleProduct?id=<%= item.productId._id %>';">
+                                    <div class="col-6">
+                                        <strong>Product:</strong> <%= item.productId.productName %><br />
+                                        <strong>Quantity:</strong> <%= item.quantity %><br />
+                                        <strong>Price:</strong> ₹<%= item.price %><br />
+                                        <h6 class="mb-3">Order Date: <span class="placeholder"><%= new Date(order.createdOn).toLocaleDateString() %></span></h6>
+                                    </div>
+                                </li>
+                            <% }); %>
+                        </ul>
+                        <!-- Button to View Orders -->
+                        <div class="text-center">
+                            <a href="/getOrders" class="btn btn-primary">View Orders</a>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-md-6 mb-4">
+                    <!-- Shipping Address Section -->
+                    <div class="card p-3">
+                        <h3 class="text-center mb-3">Shipping Address</h3>
+                        <p><strong>Address Type:</strong> <%= order.address.addressType %></p>
+                        <p><strong>Name:</strong> <%= order.address.name %></p>
+                        <p><strong>City:</strong> <%= order.address.city %></p>
+                        <p><strong>State:</strong> <%= order.address.state %></p>
+                        <p><strong>Pin Code:</strong> <%= order.address.pincode %></p>
+                        <p><strong>Phone:</strong> <%= order.address.phone %></p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row mb-4">
+                <!-- Order Summary Section -->
+                <div class="col-md-6">
+                    <div class="card p-3">
+                        <h3 class="text-center mb-3">Order Summary</h3>
+                        <h5><strong>Price Details:</strong></h5>
+                        <div class="pl-3 py-2">
+                            <p><strong>Total:</strong> ₹<%= order.totalPrice %></p>
+                        </div>
+                        <hr>
+                        <p><strong>Payment Method:</strong> <%= order.paymentMethod %></p>
+                        <p><strong>Order Status:</strong> <%= order.status %></p>
+                        <p><strong>Ordered Date:</strong> <%= new Date(order.createdOn).toLocaleString() %></p>
+                    </div>
+                </div>
+    
+                <!-- Order Status Section -->
+                <div class="col-md-6">
+                    <div class="card p-3">
+                        <h3 class="text-center mb-3">Order Status</h3>
+                        <div class="text-center">
+                            <% if (order.status === 'Pending') { %>
+                                <div class="alert alert-warning mt-3">
+                                    <h3>Your order is currently pending.</h3>
+                                    <p>Please wait while we process your order.</p>
+                                    <button class="btn btn-danger mt-3" onclick="cancelOrder('<%= order._id %>')">Cancel Order</button>
+                                </div>
+                            <% } else if (order.status === 'Cancelled') { %>
+                                <div class="alert alert-danger mt-3">
+                                    <h3>Your order has been cancelled.</h3>
+                                    <p>Please contact customer support for more information.</p>
+                                </div>
+                            <% } else if (order.status === 'Shipped') { %>
+                                <div class="alert alert-info mt-3">
+                                    <h3>Your order has been shipped!</h3>
+                                    <p>It is on its way to you. You can track your order for more details.</p>
+                                    <button class="btn btn-danger mt-3" onclick="cancelOrder('<%= order._id %>')">Cancel Order</button>
+                                </div>
+                            <% } else if (order.status === 'Delivered') { %>
+                                <div class="alert alert-success mt-3">
+                                    <h3>Your order has been delivered successfully!</h3>
+                                    <button class="btn btn-danger mt-2" onclick="returnRequest('<%= order._id %>')">Return Request</button>
+                                </div>
+                            <% } else if (order.status === 'Return Request') { %>
+                                <div class="alert alert-info mt-3">
+                                    <h3>Your return request is under review.</h3>
+                                    <p>We will notify you once it is processed.</p>
+                                </div>
+                            <% } else if (order.status === 'Returned') { %>
+                                <div class="alert alert-secondary mt-3">
+                                    <h3>This order has been returned.</h3>
+                                    <p>Thank you for your understanding.</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-12 p-5 text-center">
+                <% if (order.status === 'Delivered' || order.status === 'Return Request' || order.status === 'Returned') { %>
+                    <hr>
+                    <div class="mt-5">
+                        <h5>You can download your order invoice here:</h5>
+                        <button class="btn btn-primary mt-1 text-dark"
+                            onclick="window.location.href='/downloadInvoice?orderId=<%= order._id %>'">Download Invoice</button>
+                    </div>
+                    <hr>
+                <% } %>
+            </div>
+        </div>
+    </body>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      function cancelOrder(orderId) {
+        axios.post('/cancelOrder', { orderId: orderId })
+            .then(response => {
+                if (response.status === 200) {
+                    
+                    Swal.fire({
+                        title: 'Order Cancelled',
+                        text: 'Your order has been cancelled successfully!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload(); 
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Order cancellation error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Could not cancel the order. Please try again later.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+    }
+    
+        </script>
+                
+              
+            
+          
+        </body>
+
+    <%- include('../partials/adminFooter') %>

@@ -1,165 +1,330 @@
 <!DOCTYPE html>
 <html lang="zxx">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Male_Fashion Template" />
+    <meta name="keywords" content="Male_Fashion, unica, creative, html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Shop Bag</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Male_Fashion Template">
-  <meta name="keywords" content="Male_Fashion, unica, creative, html">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Shop Bag</title>
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Css Styles -->
+    <link
+      rel="stylesheet"
+      href="/stylesheets/bootstrap.min.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/elegant-icons.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/magnific-popup.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/nice-select.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/owl.carousel.min.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/slicknav.min.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="description" content="Male_Fashion Template" />
+      <meta name="keywords" content="Male_Fashion, unica, creative, html" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <title>Shop Bag</title>
 
-  <!-- Css Styles -->
-  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body><head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Male_Fashion Template">
-  <meta name="keywords" content="Male_Fashion, unica, creative, html">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Shop Bag</title>
+      <!-- Google Font -->
+      <link
+        href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet"
+      />
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+      <!-- Css Styles -->
+      <link
+        rel="stylesheet"
+        href="/stylesheets/bootstrap.min.css"
+        type="text/css"
+      />
+      <link
+        rel="stylesheet"
+        href="/stylesheets/elegant-icons.css"
+        type="text/css"
+      />
+      <link
+        rel="stylesheet"
+        href="/stylesheets/magnific-popup.css"
+        type="text/css"
+      />
+      <link
+        rel="stylesheet"
+        href="/stylesheets/nice-select.css"
+        type="text/css"
+      />
+      <link
+        rel="stylesheet"
+        href="/stylesheets/owl.carousel.min.css"
+        type="text/css"
+      />
+      <link
+        rel="stylesheet"
+        href="/stylesheets/slicknav.min.css"
+        type="text/css"
+      />
+      <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
+      <style>
+       .btn-info, .btn-warning {
+    padding: 0.375rem 1rem; /* Ensures buttons have the same padding */
+    font-size: 0.875rem;    /* Makes text sizes uniform */
+}
 
-  <!-- Css Styles -->
-  <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/elegant-icons.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/magnific-popup.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/nice-select.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/slicknav.min.css" type="text/css">
-  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
-</head>
-<body>
-    <!-- Page Preloder -->
-    <%- include('../partials/header') %>
+.btn-block {
+    display: inline-block;
+    width: 100%; /* Ensures buttons fill the available width for consistency */
+}
+
+
+      </style>
+    </head>
     <body>
+      <!-- Page Preloder -->
+      <%- include('../partials/header') %>
+      <body>
         <!-- Breadcrumb Section Begin -->
         <section class="breadcrumb-option">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="breadcrumb__text">
-                            <h4>Orders List</h4>
-                            <div class="breadcrumb__links">
-                                <a href="/">Home</a>
-                                <a href="/getOrders">orders</a>
-                                <span>Orders List</span>
-                            </div>
-                        </div>
-                    </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                  <h4>Orders List</h4>
+                  <div class="breadcrumb__links">
+                    <a href="/">Home</a>
+                    <a href="/getOrders">orders</a>
+                    <span>Orders List</span>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </section>
         <!-- Breadcrumb Section End -->
         <div class="container mt-5">
-            <div class="row">
-                <% if (orders.length === 0) { %>
-                    <div class="col-12 align-content-center h3" style="height: 30vh;">
-                        <div class="alert alert-info text-center">No orders found.</div>
-                        <div class="d-flex justify-content-center py-4">
-                            <div class="continue__btn">
-                                <a href="/shop">Continue Shopping</a>
-                            </div>
-                        </div>
-                    </div>
-                <% } else { %>
-                    <% orders.forEach(order => { %>
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <!-- Order Items -->
-                                    <h5 class="card-title text-uppercase">
-                                        <% if (order.orderedItems && order.orderedItems.length > 0) { %>
-                                            <% order.orderedItems.forEach(item => { %>
-                                                <% if (item.productId) { %>
-                                                    <div style="display: flex; align-items: center;">
-                                                        <div class="product__cart__item__pic">
-                                                           
-                                                            <img src="/uploads/product-images/<%= item.productId.productImage[0] %>" alt="<%= item.productId.productName %>" style="width: 50px; height: 50px; margin-right: 10px;"  />
-                                                        </div>
-                                                        <h6 style="margin: 0;"><%= item.productId.productName %></h6>
-                                                        <br>
-                                                       <span class="p-2">
-                                                        (<%= item.quantity%>)
-                                                       </span>
-
-                                                    </div>
-                                                <% } %>
-                                            <% }); %>
-                                        <% } else { %>
-                                            No product information available
-                                        <% } %>
-                                    </h5>
-        
-                                    <!-- Order Date -->
-                                   
-                                    <p class="card-text">
-                                        <strong>Date of Order:</strong> <%= new Date(order.createdOn).toLocaleDateString() %>
-                                    </p>
-        
-                                    <!-- Order Price -->
-                                    <p class="card-text">
-                                        <strong>Price:</strong> ₹<%= order.totalPrice.toFixed(2) %>
-                                    </p>
-        
-                                    <!-- Payment Method -->
-                                    <p class="card-text">
-                                        <strong>Payment Method:</strong> <%= order.paymentMethod %>
-                                    </p>
-        
-                                    <!-- Order Status -->
-                                    <p class="card-text">
-                                        <strong>Status:</strong> <%= order.status %>
-                                    </p>
-        
-                                    <!-- Action Button -->
-                                    <a href="/orderDetails?orderId=<%= order._id %>" class="btn btn-dark btn-sm">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    <% }); %>
-                <% } %>
+          <div class="row">
+            <% if (orders.length === 0) { %>
+            <div class="col-12 align-content-center h3" style="height: 30vh">
+              <div class="alert alert-info text-center">No orders found.</div>
+              <div class="d-flex justify-content-center py-4">
+                <div class="continue__btn">
+                  <a href="/shop">Continue Shopping</a>
+                </div>
+              </div>
             </div>
-        
-            <% if (totalPages > 1) { %>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center mt-4">
-                        <% if (currentPage > 1) { %>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
-                            </li>
-                        <% } %>
-                        
-                        <% for (let i = 1; i <= totalPages; i++) { %>
-                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                            </li>
-                        <% } %>
-                        
-                        <% if (currentPage < totalPages) { %>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
-                            </li>
-                        <% } %>
-                    </ul>
-                </nav>
-            <% } %>
-        </div>
-        
-        
+            <% } else { %>
+            <div class="col-12">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Order Items</th>
+                    <th>Date of Order</th>
+                    <th>Price</th>
+                    <th>Payment Method</th>
+                    <th>Payment status</th>
+                    <th>Status</th>
 
-         
-  <%- include('../partials/userfooter')%>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% orders.forEach(order => { %>
+                    <tr>
+                        <td>
+                            <% if (order.orderedItems && order.orderedItems.length > 0) { %> 
+                                <% order.orderedItems.forEach(item => { %> 
+                                    <% if (item.productId) { %>
+                                    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                                        <div class="product__cart__item__pic">
+                                            <img
+                                                src="/uploads/product-images/<%= item.productId.productImage[0] %>"
+                                                alt="<%= item.productId.productName %>"
+                                                style="width: 50px; height: 50px; margin-right: 10px;"
+                                            />
+                                        </div>
+                                        <span><%= item.productId.productName %> (<%= item.quantity %>)</span>
+                                    </div>
+                                    <% } %> 
+                                <% }); %> 
+                            <% } else { %> 
+                                No product information available 
+                            <% } %>
+                        </td>
+                        <td>
+                            <%= new Date(order.createdOn).toLocaleDateString() %>
+                        </td>
+                        <td>₹<%= order.totalPrice.toFixed(2) %></td>
+                        <td><%= order.paymentMethod %></td>
+                        <td><%= order.paymentStatus %></td>
+                        <td><%= order.status %></td>
+                        <td>
+                          <a href="/orderDetails?orderId=<%= order._id %>" class="btn btn-info btn-sm btn-block">View Details</a>
+                          <% if (order.paymentStatus === "Pending") { %>
+                              <button
+                                  class="btn btn-warning btn-sm btn-block text-dark font-weight-bold"
+                                  onclick="completePayment('<%= order._id %>', <%= order.totalPrice %>)"
+                              >
+                                  Complete Payment
+                              </button>
+                          <% } %>
+                      </td>
+                      
+                      
+                    </tr>
+                    <% }); %>
+                </tbody>
+                
+              </table>
+            </div>
+            <% } %>
+          </div>
+
+          <% if (totalPages > 1) { %>
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-4">
+              <% if (currentPage > 1) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= currentPage - 1 %>"
+                  >Previous</a
+                >
+              </li>
+              <% } %> <% for (let i = 1; i <= totalPages; i++) { %>
+              <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+              </li>
+              <% } %> <% if (currentPage < totalPages) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= currentPage + 1 %>"
+                  >Next</a
+                >
+              </li>
+              <% } %>
+            </ul>
+          </nav>
+          <% } %>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+      
+        <script>
+          async function completePayment(orderId, totalPrice) {
+              try {
+                  
+                  const { data } = await axios.post("/create-razorpay-order", { totalPrice });
+      
+                  if (data.success) {
+                      const options = {
+                          key: data.key_id,
+                          amount: data.order.amount,
+                          currency: "INR",
+                          name: "Shop Bag",
+                          description: "Order Payment",
+                          order_id: data.order.id,
+                          handler: function (response) {
+                              handlePaymentSuccess(response.razorpay_payment_id, data.order.id, orderId, "Paid"); // Pass paymentStatus as "Paid"
+                          },
+                          prefill: { name: data.user },
+                          theme: { color: "#3399cc" },
+                      };
+      
+                      const rzp = new Razorpay(options);
+                      rzp.on("payment.failed", async (response) => {
+                          
+                          await Swal.fire({
+                              title: "Error!",
+                              text: "Payment Failed. Please try again.",
+                              icon: "error",
+                              confirmButtonText: "OK",
+                          });
+      
+                          
+                          handlePaymentSuccess(null, data.order.id, orderId, "Pending");
+                      });
+                      rzp.open(); 
+                  }
+              } catch (error) {
+                  console.error("Error creating Razorpay order:", error);
+                  Swal.fire({
+                      title: "Error!",
+                      text: "An error occurred while creating the payment order. Please try again.",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                  });
+              }
+          }
+      
+          async function handlePaymentSuccess(paymentId, razorpayOrderId, orderId, paymentStatus) {
+              try {
+                  
+                  const paymentResponse = await axios.post("/payment-success", {
+                      paymentId,
+                      razorpayOrderId,
+                      orderId,
+                      paymentStatus,  
+                  });
+      
+                  
+                  if (paymentResponse.data.success) {
+                      
+                      window.location.href = `/orderSuccess?orderId=${paymentResponse.data.orderId}`;
+                  } else {
+                      Swal.fire(
+                          "Payment Failed",
+                          paymentResponse.data.message,
+                          "error"
+                      );
+                  }
+              } catch (error) {
+                  console.error("Error placing order:", error);
+                  Swal.fire({
+                      title: "Error!",
+                      text: "An error occurred while placing your order. Please try again.",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                  });
+              }
+          }
+      </script>
+      
+
+        <%- include('../partials/userfooter')%>
+      </body>
+    </body>
+  </body>
+</html>

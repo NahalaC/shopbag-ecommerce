@@ -91,18 +91,23 @@ body {
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
-            <a href="/admin/adminIndex" class="brand-wrap">
-                <img src="/public/img/logo.png" class="logo" alt="Evara Dashboard" >
+            <a href="/admin/dashboard" class="brand-wrap">
+                <img src="/img/logo.png" class="logo" alt="ShopBag" >
             </a>
-            <div>
+            <!-- <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
-            </div>
+            </div> -->
         </div>
         <nav>
             <ul class="menu-aside">
                 <li class="menu-item active">
-                    <a class="menu-link" href="/admin/adminIndex"> <i class="icon material-icons md-home"></i>
+                    <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/salesReport"> <i class="icon material-icons md-trending_up"></i>
+                        <span class="text h6">Sales Report</span>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -125,16 +130,24 @@ body {
                         
                     </div>
                 </li>
-                <li class="menu-item has-submenu">
+
+                <li class="menu-item">
+                    <a href="/admin/orders" class="btn" style=" color: white; display: inline-block;">
+                      <i class="icon material-icons md-shopping_bag"></i>
+                      Orders
+                    </a>
+                  </li>
+                <!-- <li class="menu-item has-submenu">
                     <a class="menu-link" href="admin/orders"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
                         <a href="/admin/orders">Order list</a>
-                         <a href="/admin/Order_Return">Order Retur</a>
-                        <!-- <a href="page-orders-detail.html">Order detail</a>  -->
+                        
+                       
                     </div>
-                </li>
+                </li> -->
+
                 <!-- <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
                         <span class="text">Sellers</span>
@@ -165,11 +178,20 @@ body {
                         <a href="page-error-404.html">Error 404</a>
                     </div>
                 </li> -->
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin/coupens"> <i class="icon material-icons md-comment"></i>
-                        <span class="text">Coupens</span>
+                <li class="menu-item dropdown col-12">
+                    <a class="menu-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <i class="icon material-icons md-percentage"></i>
+                        <span class="text h6">Offers</span>
                     </a>
+                    <ul class="dropdown-menu border border-1 shadow-lg col-12">
+                        <li><a class="dropdown-item h6 py-2" href="/admin/productOffers">Product Offers</a></li>
+                        <li><a class="dropdown-item h6 py-2" href="/admin/categoryOffers">Category Offers</a></li>
+                    </ul>
                 </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/coupons"> <i class="icon material-icons md-card_giftcard"></i>
+                        <span class="text h6">Coupons</span> </a>
+                </li>  
                 <li class="menu-item">
                     <a class="menu-link" href="/admin/users"> <i class="icon material-icons md-person"></i>
                         <span class="text">User</span> </a>
@@ -182,7 +204,7 @@ body {
             </ul>
             <hr>
             <ul class="menu-aside">
-                <li class="menu-item has-submenu">
+                <!-- <li class="menu-item has-submenu">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
                         <span class="text">Reports</span>
                     </a>
@@ -190,7 +212,7 @@ body {
                         <a href="/admin/SellingReport">Selling Reports</a>
                         <a href="/admin/OrderReport">Order Reports</a>
                     </div>
-                </li>
+                </li> -->
                 <!-- <li class="menu-item">
                     <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
                         <span class="text"> Starter page </span>
@@ -219,11 +241,11 @@ body {
                 </form> -->
             </div>
             <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <!-- <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button> -->
                 <ul class="nav">
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
-                    </li>
+                    </li> -->
                     
                     <!-- <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/public/assets/imgs/people/avatar2.jpg" alt="User"></a>
@@ -236,7 +258,7 @@ body {
                         </div>
                     </li> -->
                     <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/imgs/people/avatar2.jpg" alt="Admin"></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-danger" href="/admin/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>

@@ -33,7 +33,6 @@
     <link
       rel="stylesheet"
       href="/stylesheets/magnific-popup.css"
-      type="text/css"
     />
     <link
       rel="stylesheet"
@@ -77,6 +76,27 @@
 .arrow-btn:hover {
     background-color: #e0e0e0; /* Darker background on hover */
 }
+.related-products .product__item {
+    max-width: 100%;
+    height: 100%;
+}
+
+.product__item__pic {
+    width: 100%;
+    height: 350px; /* Adjust height for larger images */
+    background-size: cover;
+    background-position: center;
+}
+
+.product__item__text {
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.product-price {
+    font-size: 1.2rem;
+}
+
 
     </style>
   </head>
@@ -222,7 +242,7 @@
                       Add to Cart
                   </button>
               <% } else { %>
-                  <!-- Show Out of Stock message if product is out of stock -->
+                  
                   <span class="out-of-stock" style="color: red; font-weight: bold;">
                       Out of Stock
                   </span>
@@ -423,45 +443,41 @@
     <div class="related-products text-center">
       <h3>Related Products</h3>
       <div class="row justify-content-center">
-        <% relatedProducts.forEach(relatedProduct => { %>
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-          <div class="product__item border rounded shadow-sm">
-            <div
-              class="product__item__pic set-bg"
-              data-setbg="/uploads/product-images/<%= relatedProduct.productImage[0] %>"
-            >
-              <ul class="product__hover">
-                <li>
-                  <a href="/productPage?id=<%= relatedProduct._id %>"
-                    ><img src="img/icon/heart.png" alt=""
-                  /></a>
-                </li>
-                <li>
-                  <a href="/productPage?id=<%= relatedProduct._id %>"
-                    ><img src="img/icon/search.png" alt=""
-                  /></a>
-                </li>
-              </ul>
-            </div>
-            <div class="product__item__text p-3">
-              <h6 class="product-name">
-                <a
-                  href="/productPage?id=<%= relatedProduct._id %>"
-                  class="text-dark"
-                  style="font-weight: bold"
-                  ><%= relatedProduct.productName %></a
-                >
-              </h6>
-              <h5 class="product-price text-success" style="font-weight: bold">
-                ₹<%= relatedProduct.salePrice.toFixed(2) %>
-              </h5>
-              <a href="#" class="btn add-to-cart-btn">Add to Cart +</a>
-            </div>
+          <% relatedProducts.forEach(relatedProduct => { %>
+          <div class="col-lg-4 col-md-6 col-sm-8 mb-4">
+              <div class="product__item border rounded shadow-sm" style="max-width: 100%; height: 100%;">
+                  <div class="product__item__pic set-bg" style="height: 350px; background-size: cover;" 
+                      data-setbg="/uploads/product-images/<%= relatedProduct.productImage[0] %>">
+                      <ul class="product__hover">
+                          <li>
+                              <a href="/productPage?id=<%= relatedProduct._id %>">
+                                  <img src="img/icon/heart1.png" alt="" />
+                              </a>
+                          </li>
+                          <li>
+                              <a href="/productPage?id=<%= relatedProduct._id %>">
+                                  <img src="img/icon/search.png" alt="" />
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="product__item__text p-3">
+                      <h6 class="product-name">
+                          <a href="/productPage?id=<%= relatedProduct._id %>" class="text-dark" style="font-weight: bold">
+                              <%= relatedProduct.productName %>
+                          </a>
+                      </h6>
+                      <h5 class="product-price text-success" style="font-weight: bold">
+                          ₹<%= relatedProduct.salePrice.toFixed(2) %>
+                      </h5>
+                      <a href="#" class="btn add-to-cart-btn">Add to Cart +</a>
+                  </div>
+              </div>
           </div>
-        </div>
-        <% }) %>
+          <% }) %>
       </div>
-    </div>
+  </div>
+  
 
     <style>
       body {
@@ -530,11 +546,7 @@
       }
     </style>
 
-    <!-- Shop Details Section End -->
-
-    <!-- Related Section Begin -->
-
-    <!-- Related Section End -->
+   
 
     <script>
       const zoomContainers = document.querySelectorAll(".zoom-container");
@@ -581,7 +593,7 @@
 function checkQuantity(input) {
     const maxQuantity = 3;
     if (input.value > maxQuantity) {
-        input.value = maxQuantity; // Reset to max if user exceeds
+        input.value = maxQuantity; 
         Swal.fire({
             icon: 'warning',
             title: 'Quantity Limit',
@@ -604,24 +616,24 @@ function addToCart(productId, quantity) {
                     title: 'Success',
                     text: "Product added to cart!",
                 }).then(() => {
-                    window.location.href = '/cart'; // Redirect to cart if successful
+                    window.location.href = '/cart'; 
                 });
             } else {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Warning',
-                    text: response.message, // Display the message from the server
+                    text: response.message,
                 }).then(() => {
-                    // Redirect to cart if the product is already in the cart
+                    
                     if (response.redirectToCart) {
-                        window.location.href = '/cart'; // Redirect to the cart page
+                        window.location.href = '/cart'; 
                     }
                 });
             }
         },
         error: function(err) {
             console.error(err);
-            // Handle the error and display the SweetAlert
+            
             const errorMessage = err.responseJSON?.message || 'Error adding product to cart.';
             Swal.fire({
                 icon: 'error',
@@ -635,73 +647,6 @@ function addToCart(productId, quantity) {
 
 
 
-// function checkQuantity(input, availableQuantity) {
-//     const selectedQuantity = parseInt(input.value);
-
-//     // Validate selected quantity against available quantity and maximum of 3
-//     if (selectedQuantity > availableQuantity) {
-//         input.value = availableQuantity; // Set to max available if selected exceeds
-//         Swal.fire('Alert', 'You can only select up to ' + availableQuantity + ' items.', 'warning');
-//     } else if (selectedQuantity > 3) {
-//         input.value = 3; // Cap at 3 if selected exceeds 3
-//         Swal.fire('Alert', 'You can only add a maximum of 3 items.', 'warning');
-//     }
-// }
-
-// function addToCart(productId, quantity) {
-//     // Check existing quantity in the cart
-//     $.ajax({
-//         url: '/checkCart', // Create a route to check current product quantity in the cart
-//         method: 'POST',
-//         contentType: 'application/json',
-//         data: JSON.stringify({ productId }),
-//         success: function(cartResponse) {
-//             const currentCartQuantity = cartResponse.currentQuantity || 0;
-//             const totalQuantity = currentCartQuantity + parseInt(quantity);
-
-//             // Check if adding will exceed the limit
-//             if (totalQuantity > 3) {
-//                 Swal.fire('Alert', 'You cannot have more than 3 of this product in your cart.', 'warning');
-//                 return; // Exit if the total exceeds 3
-//             }
-
-//             // Proceed with adding to cart
-//             Swal.fire({
-//                 title: 'Adding to Cart',
-//                 text: 'Are you sure you want to add this product to your cart?',
-//                 icon: 'question',
-//                 showCancelButton: true,
-//                 confirmButtonText: 'Yes, add it!',
-//                 cancelButtonText: 'No, cancel'
-//             }).then((result) => {
-//                 if (result.isConfirmed) {
-//                     $.ajax({
-//                         url: '/addToCart', 
-//                         method: 'POST',
-//                         contentType: 'application/json',
-//                         data: JSON.stringify({ productId, quantity }),
-//                         success: function(response) {
-//                             if (response.success) {
-//                                 Swal.fire('Success!', 'Product added to cart!', 'success');
-//                                 window.location.href = '/cart'; 
-//                             } else {
-//                                 Swal.fire('Error!', response.message, 'error'); 
-//                             }
-//                         },
-//                         error: function(err) {
-//                             console.error(err);
-//                             Swal.fire('Error!', 'Error adding product to cart.', 'error');
-//                         }
-//                     });
-//                 }
-//             });
-//         },
-//         error: function(err) {
-//             console.error(err);
-//             Swal.fire('Error!', 'Error checking cart quantity.', 'error');
-//         }
-//     });
-// }
 
 
     </script>

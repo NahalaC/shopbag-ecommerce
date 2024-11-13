@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zxx">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Male_Fashion Template" />
+    <meta name="keywords" content="Male_Fashion, unica, creative, html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ShopBag Shop</title>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Css Styles -->
+    <link
+      rel="stylesheet"
+      href="/stylesheets/nice-select.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/bootstrap.min.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/font-awesome.min.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/elegant-icons.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/magnific-popup.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/owl.carousel.min.css"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="/stylesheets/slicknav.min.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
+    <body>
+      <%- include('../partials/header') %>
+
+      <!-- Breadcrumb Section Begin -->
+      <section class="breadcrumb-option">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="breadcrumb__text">
+                <h4>Wishlist</h4>
+                <div class="breadcrumb__links">
+                  <a href="/">Home</a>
+                  <span>Wishlist</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Breadcrumb Section End -->
+
+      <!-- wishlist Section Begin -->
+      <section class="spad">
+        <div class="container">
+          <% if (products.length > 0) { %>
+            <table class="table table-bordered">
+              <thead>
+                <tr style="background-color: #f2f2f2; text-align: left">
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% products.forEach(product => { %>
+                  <% if (product.productImage && product.productImage.length > 0) { %>
+                    <tr style="background-color: #fff; text-align: left">
+                      <td class="product__cart__item" style="padding: 10px">
+                        <div class="product__cart__item__pic">
+                          <img
+                            src="/uploads/product-images/<%= product.productImage[0].replace(/\\/g, '/') %>"
+                            alt="<%= product.productName %>"
+                            class="img-fluid rounded cursor-pointer"
+                            onclick="window.location.href='/productPage?id=<%= product._id %>';"
+                            style="width: 50px; height: 50px; cursor: pointer"
+                          />
+                        </div>
+                        <div class="product__cart__item__text">
+                          <h6 style="margin: 0">
+                            <a
+                              href="/productPage?id=<%= product._id %>"
+                              style="text-decoration: none; color: inherit"
+                            >
+                              <%= product.productName %>
+                            </a>
+                          </h6>
+                        </div>
+                      </td>
+                      <td style="padding: 10px">
+                        ₹<%= product.salePrice.toFixed(2) %>
+                      </td>
+                      <td style="padding: 10px" class="cart__close">
+                        <i
+                          class="fa fa-close"
+                          style="cursor: pointer"
+                          onclick="removeFromWishlist('<%= product._id %>')"
+                        ></i>
+                      </td>
+                    </tr>
+                  <% } %>
+                <% }); %>
+              </tbody>
+            </table>
+            
+
+          <!-- Pagination logic here -->
+
+          <% } else { %>
+          <div class="alert alert-info h4" role="alert">
+            Your wishlist is empty! Start adding products you love.
+          </div>
+          <% } %>
+        </div>
+      </section>
+
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+      <script>
+        function removeFromWishlist(productId) {
+          event.preventDefault();
+
+          axios
+            .post("/removeFromWishlist", { productId })
+            .then((response) => {
+              if (response.data.success) {
+                const wishlistItem = document.getElementById(
+                  `wishlist-item-${productId}`
+                );
+                if (wishlistItem) {
+                  wishlistItem.remove();
+                }
+
+                Swal.fire({
+                  toast: true,
+                  timer: 1000,
+                  timerProgressBar: true,
+                  text: response.data.message,
+                  icon: "success",
+                  position: "top-end",
+                  showConfirmButton: false,
+                  customClass: {
+                    popup: "custom-toast",
+                  },
+                });
+              }
+            })
+            .catch((error) => {
+              Swal.fire({
+                toast: true,
+                timer: 1000,
+                timerProgressBar: true,
+                title: "Error!",
+                text: "Failed to remove product from wishlist.",
+                icon: "error",
+                position: "top-end",
+                showConfirmButton: false,
+                customClass: {
+                  popup: "custom-toast",
+                },
+              });
+              console.error(error);
+            });
+        }
+      </script>
+    </body>
+
+    <%- include('../partials/userfooter')%>
+  </head>
+</html>

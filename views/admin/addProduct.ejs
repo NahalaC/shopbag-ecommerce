@@ -293,16 +293,17 @@
     const category = document.getElementById('category').value;
 
    
-    if (!productName) {
-        document.getElementById('productName-error').textContent = 'Product name is required.';
-        isValid = false;
-    }
+    if (!productName || /^[0-9]+$/.test(productName)) {
+    document.getElementById('productName-error').textContent = 'Product name is required and cannot be only digits.';
+    isValid = false;
+}
+
 
   
-    if (!description) {
-        document.getElementById('description-error').textContent = 'Description is required.';
-        isValid = false;
-    }
+if (!description || /^[0-9]+$/.test(description)) {
+    document.getElementById('description-error').textContent = 'Description is required and cannot be only numbers.';
+    isValid = false;
+}
 
 
     if (!regularPrice || isNaN(regularPrice) || parseFloat(regularPrice) <= 0) {
@@ -323,12 +324,12 @@
     }
 
    
-    if (!color) {
-        document.getElementById('color-error').textContent = 'Color is required.';
+    if (!color||/^[0-9]+$/.test(color)) {
+        document.getElementById('color-error').textContent = 'Color is required and cannot be only digits';
         isValid = false;
     }
 
-   y
+   
     if (!category) {
         document.getElementById('category-error').textContent = 'Category is required.';
         isValid = false;
@@ -336,20 +337,21 @@
 
    
     const imageInputs = document.querySelectorAll('input[type="file"]');
-    let imagesUploaded = false;
+let totalImages = 0;
 
-    imageInputs.forEach(input => {
-        if (input.files.length > 0) {
-            imagesUploaded = true;
-        }
-    });
+// Count the total files across all input fields
+imageInputs.forEach(input => {
+    totalImages += input.files.length;
+});
 
-    if (!imagesUploaded) {
-        document.getElementById('images-error').textContent = 'At least three images is required.';
-        isValid = false;
-    }
+// Check if the total count is less than 3
+if (totalImages < 3) {
+    document.getElementById('images-error').textContent = 'At least three images are required.';
+    isValid = false;
+} else {
+    document.getElementById('images-error').textContent = ''; // Clear error message if valid
+}
 
-  
     return isValid;
 }
 

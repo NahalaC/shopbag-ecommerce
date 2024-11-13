@@ -1,0 +1,130 @@
+<%- include('../partials/adminHeader') %>
+
+<head>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css"
+  />
+  <link rel="stylesheet" href="/admin-assets/css/productsCategory.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="d-flex justify-content-center align-content-center py-5">
+      Add Offer to Product
+    </h1>
+    <form
+      id="offerForm"
+      action="/admin/addProductOffer"
+      method="POST"
+      class="d-block justify-content-center align-content-center p-5 mx-5"
+    >
+      <div class="form-group">
+        <label for="offerName">Offer Name:</label>
+        <input
+          type="text"
+          name="offerName"
+          id="offerName"
+          class="form-control shadow"
+        />
+        <small id="offerNameError" class="text-danger"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="productId">Select Product:</label>
+        <select
+          name="productId"
+          id="productId"
+          class="form-select shadow border"
+        >
+          <option value="">-- Select a Product --</option>
+          <% products.forEach(product => { %>
+            <% if (!product.isBlocked) { %>
+              <% if (product.productOffer == 0) { %>
+                <option value="<%= product._id %>"><%= product.productName %></option>
+              <% } else { %>
+                <option value="<%= product._id %>" class="bg-dark text-light" disabled>
+                  <%= product.productName %> (Offer Already Applied)
+                </option>
+              <% } %>
+            <% } %>
+          <% }); %>
+        </select>
+        <small id="productIdError" class="text-danger"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="productOffer">Offer Percentage:</label>
+        <input
+          type="number"
+          name="productOffer"
+          id="productOffer"
+          class="form-control shadow"
+          min="1"
+          max="100"
+        />
+        <small id="productOfferError" class="text-danger"></small>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Offer</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script>
+    document.getElementById("offerForm").addEventListener("submit", function (event) {
+      event.preventDefault(); 
+
+   
+      document.getElementById("offerNameError").textContent = "";
+      document.getElementById("productIdError").textContent = "";
+      document.getElementById("productOfferError").textContent = "";
+
+      let isValid = true;
+
+      
+const offerName = document.getElementById("offerName").value.trim();
+
+const namePattern = /^(?=.*[a-zA-Z])[a-zA-Z0-9\s\W]+$/;
+
+if (!offerName) {
+    document.getElementById("offerNameError").textContent = "Offer name is required.";
+    isValid = false;
+} else if (!namePattern.test(offerName)) {
+    document.getElementById("offerNameError").textContent = "Offer name must contain letters and cannot be only numbers.";
+    isValid = false;
+} else {
+    document.getElementById("offerNameError").textContent = ""; 
+}
+
+
+     
+      const productId = document.getElementById("productId").value;
+      if (!productId) {
+        document.getElementById("productIdError").textContent = "Please select a product.";
+        isValid = false;
+      } else {
+    
+        const selectedOption = document.querySelector(`#productId option[value="${productId}"]`);
+        if (selectedOption && selectedOption.disabled) {
+          Swal.fire("Error", "Offer already applied to the selected product.", "error");
+          isValid = false;
+        }
+      }
+
+      
+      const productOffer = document.getElementById("productOffer").value;
+      if (!productOffer || isNaN(productOffer) || productOffer <= 0 || productOffer > 75) {
+        document.getElementById("productOfferError").textContent = "Offer percentage can't more than 75%";
+        isValid = false;
+      }
+
+      
+      if (isValid) {
+        this.submit();
+      }
+    });
+  </script>
+
+  <%- include('../partials/adminFooter') %>
+</body>

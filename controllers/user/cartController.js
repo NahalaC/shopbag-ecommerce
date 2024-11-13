@@ -1,6 +1,8 @@
 const Cart = require("../../models/cartModel");
 const Product = require("../../models/Productmodel");
 const User = require("../../models/User");
+const Wishlist = require("../../models/wishlistModel");
+
 
 const getCart = async (req, res) => {
   try {
@@ -40,7 +42,7 @@ const getCart = async (req, res) => {
       }
     });
 
-    let shippingCharge = subtotal > 500 ? 50 : 0;
+     let shippingCharge = subtotal < 500 ? 50 : 0;
     const total = subtotal + shippingCharge;
 
     res.render("user/cart", {
@@ -57,6 +59,7 @@ const getCart = async (req, res) => {
 };
 
 
+
 const addToCart = async (req, res) => {
   try {
     if (req.session.user) {
@@ -70,7 +73,7 @@ const addToCart = async (req, res) => {
       const userId = req.session.user.id;
       const cart = await Cart.findOne({ userId });
 
-      // If cart doesn't exist, create a new one
+
       if (!cart) {
         const newCart = new Cart({
           userId,
@@ -84,28 +87,26 @@ const addToCart = async (req, res) => {
           ],
         });
         await newCart.save();
-        return res.status(200).json({ success: true, message: "Product added to cart" });
       } else {
+
         const existingItem = cart.items.find((item) => item.productId.toString() === productId.toString());
 
         if (existingItem) {
-          // If the product is already in the cart, send a message
           return res.status(200).json({
             success: false,
             message: "Product is already in the cart",
             redirectToCart: true,
           });
         } else {
-          // Check if the quantity exceeds 3
+
           if (quantity > 3) {
             return res.status(400).json({
               success: false,
               message: "You can't add more than 3 units of this product at a time.",
-             
             });
           }
 
-          // Add new item to cart
+
           cart.items.push({
             productId,
             quantity,
@@ -113,9 +114,16 @@ const addToCart = async (req, res) => {
             totalPrice: product.salePrice * quantity,
           });
           await cart.save();
-          return res.status(200).json({ success: true, message: "Product added to cart" });
         }
       }
+
+
+      await Wishlist.updateOne(
+        { userId },
+        { $pull: { products: { productId } } }
+      );
+
+      return res.status(200).json({ success: true, message: "Product added to cart and removed from wishlist" });
     } else {
       return res.status(401).json({ success: false, message: "Please Login First" });
     }
@@ -151,6 +159,8 @@ const removeProductFromCart = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error." });
   }
 };
+
+
 const updateCart = async (req, res) => {
   try {
     const userId = req.session.user.id;

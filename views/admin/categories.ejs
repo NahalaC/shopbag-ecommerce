@@ -79,7 +79,7 @@
     </div>
     <header class="card-header text-center mb-20">
       <form action="/admin/categories" method="get" class="d-inline">
-        <div
+        <!-- <div
           class="input-group input-group-sm border border-1 border-grey rounded-pill"
           style="width: 500px; margin-left: 230px"
         >
@@ -90,7 +90,7 @@
             name="search"
           />
           <button class="btn" type="submit">Search</button>
-        </div>
+        </div> -->
       </form>
     </header>
     <div class="card">
@@ -290,7 +290,14 @@
         displayErrorMessage("description-error", "Please enter a description");
         isValid = false;
       }
-
+      else if (!/^[a-zA-Z\s]+$/.test(description)) {
+        displayErrorMessage(
+          "description-error",
+          "Description   should not contain only numeric characters"
+        );
+        isValid = false;
+      
+      }
       return isValid;
     }
 

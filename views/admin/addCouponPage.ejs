@@ -1,0 +1,134 @@
+<%- include('../partials/adminHeader') %>
+
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" />
+        <link rel="stylesheet" href="/admin-assets/css/productsCategory.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1 class="d-flex justify-content-center align-content-center py-5">Add New Coupon</h1>
+            <form id="couponForm" class="d-block justify-content-center align-content-center p-5 mx-5">
+                <div class="form-group">
+                    <label for="code">Coupon Code:</label>
+                    <input type="text" name="code" id="code" class="form-control shadow">
+                    <small id="codeError" class="form-text text-danger"></small>
+                </div>
+    
+                <div class="form-group">
+                    <label for="expireOn">Expire On:</label>
+                    <input type="date" name="expireOn" id="expireOn" class="form-control shadow">
+                    <small id="expireOnError" class="form-text text-danger"></small>
+                </div>
+    
+                <div class="form-group">
+                    <label for="offerPrice">Offer Price:</label>
+                    <input type="number" name="offerPrice" id="offerPrice" class="form-control shadow">
+                    <small id="offerPriceError" class="form-text text-danger"></small>
+                </div>
+    
+                <div class="form-group">
+                    <label for="minimumPrice">Minimum Price:</label>
+                    <input type="number" name="minimumPrice" id="minimumPrice" class="form-control shadow">
+                    <small id="minimumPriceError" class="form-text text-danger"></small>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Add Coupon</button>
+            </form>
+        </div>
+    
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.getElementById("couponForm").addEventListener("submit", function (event) {
+                event.preventDefault(); 
+        
+               
+                document.getElementById("codeError").textContent = "";
+                document.getElementById("expireOnError").textContent = "";
+                document.getElementById("offerPriceError").textContent = "";
+                document.getElementById("minimumPriceError").textContent = "";
+        
+                
+                const code = document.getElementById("code").value.trim();
+                const expireOn = document.getElementById("expireOn").value;
+                const offerPrice = parseFloat(document.getElementById("offerPrice").value);
+                const minimumPrice = parseFloat(document.getElementById("minimumPrice").value);
+        
+                
+                const today = new Date().toISOString().split("T")[0]; 
+        
+                let isValid = true; 
+        
+                
+                if (!code) {
+                    document.getElementById("codeError").textContent = "Coupon code cannot be empty.";
+                    isValid = false;
+                } else if (/^\d+$/.test(code)) {
+                    document.getElementById("codeError").textContent = "Coupon code cannot be numbers only.";
+                    isValid = false;
+                }
+        
+                if (!expireOn) {
+                    document.getElementById("expireOnError").textContent = "Expiration date must be selected.";
+                    isValid = false;
+                } else if (expireOn < today) {
+                    document.getElementById("expireOnError").textContent = "Expiration date cannot be in the past.";
+                    isValid = false;
+                }
+        
+                if (isNaN(offerPrice) || offerPrice <= 0) {
+                    document.getElementById("offerPriceError").textContent = "Offer price must be a positive number.";
+                    isValid = false;
+                }
+        
+                if (isNaN(minimumPrice) || minimumPrice <= 0) {
+                    document.getElementById("minimumPriceError").textContent = "Minimum price must be a positive number.";
+                    isValid = false;
+                }
+        
+                if (offerPrice >= minimumPrice) {
+                    document.getElementById("offerPriceError").textContent = "Offer price cannot be greater than or equal to minimum price.";
+                    isValid = false;
+                }
+        
+                
+                if (isValid) {
+                    const formData = {
+                        code,
+                        expireOn,
+                        offerPrice,
+                        minimumPrice
+                    };
+        
+                    fetch("/admin/addCoupon", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            Swal.fire("Success", "Coupon added successfully!", "success").then(() => {
+                                window.location.href = "/admin/coupons";
+                            });
+                        } else if (result.message === "Coupon code already exists") {
+                            Swal.fire("Error", "Coupon code already exists. Please choose another.", "error");
+                        } else {
+                            Swal.fire("Error", result.message || "An error occurred while adding the coupon.", "error");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error adding coupon:", error);
+                        Swal.fire("Error", "An unexpected error occurred. Please try again.", "error");
+                    });
+                }
+            });
+        </script>
+        
+    </body>
+    
+    
+
+        <%- include('../partials/adminFooter') %>

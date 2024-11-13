@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+      }
+
+      .header {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .section {
+        padding: 10px;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .order-items,
+      .order-summary {
+        margin-top: 20px;
+      }
+
+      .order-summary {
+        float: inline-end;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      order-items table,
+      th,
+      td {
+        border: 1px solid #000;
+        padding: 8px;
+      }
+
+      .total {
+        font-weight: bold;
+      }
+
+      .address-row table {
+        border: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Invoice</h1>
+      </div>
+      <div class="section">
+        <p><strong>Order ID:</strong> <%= order.orderId %></p>
+        <p>
+          <strong>Order Date:</strong> <%= new
+          Date(order.createdOn).toLocaleDateString() %>
+        </p>
+        <p><strong>Invoice Date:</strong> <%= new Date().toLocaleString() %></p>
+      </div>
+
+      <div class="section address-row">
+        <table style="width: 100%; border: none">
+          <tr>
+            <td style="width: 50%; vertical-align: top; padding: 10px">
+              <h2 class="section-title"><u> Shipping Address</u></h2>
+              <p><strong>Name:</strong> <%= order.address.name %></p>
+              <p><strong>City:</strong> <%= order.address.city %></p>
+              <p><strong>State:</strong> <%= order.address.state %></p>
+              <p><strong>Pin Code:</strong> <%= order.address.pincode %></p>
+              <p><strong>Phone:</strong> <%= order.address.phone %></p>
+            </td>
+            <td style="width: 50%; vertical-align: top; padding: 10px">
+              <h2 class="section-title"><u> Billing Address</u></h2>
+              <p><strong>Name:</strong> <%= order.address.name %></p>
+              <p><strong>City:</strong> <%= order.address.city %></p>
+              <p><strong>State:</strong> <%= order.address.state %></p>
+              <p><strong>Pin Code:</strong> <%= order.address.pincode %></p>
+              <p><strong>Phone:</strong> <%= order.address.phone %></p>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="section order-items">
+        <h2 class="section-title">Order Items</h2>
+        <table>
+          <thead>
+            <tr>
+              <th colspan="2">Product</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% order.orderedItems.forEach((item,index)=> { %>
+            <tr>
+              <td><%= index+1 %></td>
+              <td><%= item.productId.productName %></td>
+              <td><%= item.quantity %></td>
+              <td>₹<%= item.price %></td>
+              <td>₹<%= item.quantity * item.price %></td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section order-summary">
+        <!-- <h2 class="section-title">Order Summary</h2> -->
+
+        <% if (order.couponApplied) { %>
+        <p><strong>Discount:</strong> ₹<%= order.discount %></p>
+        <% } %>
+        <hr />
+
+        <p class="total">
+          <strong>Total Price:</strong> ₹<%= order.totalPrice.toFixed(2) %>
+        </p>
+        <hr />
+        <hr />
+      </div>
+    </div>
+  </body>
+</html>

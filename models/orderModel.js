@@ -52,7 +52,17 @@ const orderSchema = new Schema({
     },
     paymentMethod: {
         type: String,
+        enum: ['COD', 'Wallet', 'Card', 'RazorPay'],
         required: true
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['Paid', 'Pending'],
+        default: 'Pending'
+    },
+    razorpay: {
+        paymentId: { type: String },
+        orderId: { type: String }
     },
     InvoiceDate: {
         type: Date,

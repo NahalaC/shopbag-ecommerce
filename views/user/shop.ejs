@@ -56,6 +56,71 @@
             width: 100%;
             height: auto;
         }
+        .product__item__text {
+    padding: 10px 0;
+    text-align: center;
+}
+
+.offer-overlay {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.product__item__pic {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.product__item__pic img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.product__item__text h6 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.product__item__text h5 {
+    margin-top: 10px;
+}
+
+.product__color__select {
+    margin-top: 10px;
+}
+
+.d-block {
+    margin-top: 10px;
+}
+
+.product__item {
+    border: 1px solid #ebebeb;
+    padding: 15px;
+    transition: 0.3s;
+}
+
+.product__item:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+
+}
+
+    .wishlist-icon {
+    width: 24px; 
+    height: 24px;
+    transition: all 0.3s ease; 
+}
+
+.wishlist-icon.empty-heart {
+    opacity: 0.6; 
+}
+
+
+
+
     </style>
 </head>
 
@@ -88,14 +153,18 @@
                 <div class="col-lg-3">
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
-                            <form action="/shop" method="GET"> <!-- Update action URL to your search handling route -->
-                                <input type="text" name="search" placeholder="Search by product name..." required>
-                                <button type="submit"><span class="icon_search"></span></button>
+                            <form action="/shop" method="GET">
+                                <div class="input-group">
+                                    <input type="text" name="search" placeholder="Search by product name..." value="<%= searchQuery || '' %>" class="form-control" required>
+                                    <button type="submit"><span class="icon_search"></span></button>
+                                </div>
+                                <% if (searchQuery) { %>
+                                    <a href="/shop" class="btn btn-secondary" style="margin-left: 5px;">Clear</a>
+                                <% } %>
                             </form>
                         </div>
-                        
+                    
                         <div class="shop__filter__options">
-                            <!-- Category Filter Dropdown -->
                             <div class="filter__category">
                                 <div>
                                     <label for="categorySelect">Category:</label>
@@ -103,15 +172,14 @@
                                 <select id="categorySelect" onchange="applyFilters()" style="display:block;">
                                     <option value="">All Categories</option>
                                     <% categories.forEach(category => { %>
-                                        <option value="<%= category._id %>" <%= category._id === selectedCategory ? 'selected' : '' %>>
+                                        <option value="<%= category._id %>" <%= category._id === selectedCategory ? 'selected' : '' %> >
                                             <%= category.name %>
                                         </option>
                                     <% }) %>
                                 </select>
                             </div>
                         </div>
-
-                        <!-- Sorting Dropdown -->
+                    
                         <div>
                             <div class="filter__sort">
                                 <label for="sortSelect">Sort by:</label>
@@ -121,11 +189,14 @@
                                     <option value="salePrice_desc" <%= sort === 'salePrice' && order === 'desc' ? 'selected' : '' %>>Price: High to Low</option>
                                     <option value="productName_asc" <%= sort === 'productName' && order === 'asc' ? 'selected' : '' %>>A-Z</option>
                                     <option value="productName_desc" <%= sort === 'productName' && order === 'desc' ? 'selected' : '' %>>Z-A</option>
+                                    <option value="popularity" <%= sort === 'popularity' ? 'selected' : '' %>>Popularity</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
+                        
+                      
                 <div class="col-lg-9">
                     <div class="shop__product__option">
                         <div class="row">
@@ -136,7 +207,7 @@
                             </div>
                         </div>
                     </div>
-                    
+                  
                    
                     
                     
@@ -148,17 +219,47 @@
                                     <a href="/productPage?id=<%= product._id %>">
                                         <div class="product__item__pic set-bg" data-setbg="/uploads/product-images/<%= product.productImage[0] %>">
                                             <ul class="product__hover">
-                                                <li><img src="img/icon/heart.png" alt=""></li>
+
+                                               <li>
+                                            <a href="#" onclick="toggleWishlist('<%= product.id %>', this)">
+                                                
+                                                <img src="img/icon/<%= wishlistProductIds.includes(product.id.toString()) ? 'heart.png' : 'heart1.png' %>"
+                                                     class="rounded rounded-5 wishlist-icon"
+                                                     alt="wishlist">
+                                            </a>
+                                        </li>
                                                 <li><img src="img/icon/compare.png" alt=""> <span>Compare</span></li>
                                                 <li><img src="img/icon/search.png" alt=""></li>
                                             </ul>
                                         </div>
                                     </a>
+
+                                     
+                                    <% if (product.productOffer > 0) { %>
+                                        <h4 class="offer-overlay text-success cursor-pointer my-1">Extra <%= product.productOffer %>% Offer</h4>
+                                    <% } %>
+                                    <div class="category-offer">
+                                        
+                                            <% if (product.category.categoryOffer) { %>
+                                                <span class="offer-overlay text-success cursor-pointer my-1">Special Offer: <%= product.category.categoryOffer %>% off!</span>
+                                            <% } %>
+                                            
+                                        
+                                      
+                                    </div>
+                                    
+                                    
+                                    
+
+
                                     <div class="product__item__text">
                                         <h6><%= product.productName %></h6>
-                                        <span class="btn-product btn-cart mb-1" style="display: inline-block; border: 1px solid #007bff; border-radius: 5px; padding: 10px 15px; color: #007bff; text-align: center; cursor: pointer;" onclick="window.location.href='/productPage?id=<%= product._id %>'">
-                                            View Details
-                                        </span>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="btn-product btn-cart mb-1" style="display: inline-block; border: 1px solid #007bff; border-radius: 5px; padding: 10px 15px; color: #007bff; text-align: center; cursor: pointer;" onclick="window.location.href='/productPage?id=<%= product._id %>'">
+                                                View Details
+                                            </span>
+                                           
+                                        </div>
                                         <div class="rating">
                                             <i class="fa fa-star-o"></i>
                                             <i class="fa fa-star-o"></i>
@@ -167,18 +268,13 @@
                                             <i class="fa fa-star-o"></i>
                                         </div>
                                         <h5>₹<%= product.salePrice.toFixed(2) %></h5>
-                                        <div class="product__color__select">
-                                            <label for="pc-1">
-                                                <input type="radio" id="pc-1">
-                                            </label>
-                                            <label class="active black" for="pc-2">
-                                                <input type="radio" id="pc-2">
-                                            </label>
-                                            <label class="grey" for="pc-3">
-                                                <input type="radio" id="pc-3">
-                                            </label>
+                                        <div class="d-block">
+                                          
+                                            <span class="text-muted" style="text-decoration: line-through;">₹<%= product.regularPrice %></span>
                                         </div>
                                     </div>
+                                   
+                                    
                                 </div>
                             </div>
                         <% }); %>
@@ -188,14 +284,14 @@
                         <div class="col-lg-12">
                             <div class="product__pagination">
                                 <% for (let i = 1; i <= totalPages; i++) { %>
-                                    <!-- Highlight the current active page -->
+                                  
                                     <a href="?page=<%= i %>&sort=<%= sort %>&order=<%= order %>&category=<%= selectedCategory %>" class="<%= (i === currentPage) ? 'active' : '' %>">
                                         <%= i %>
                                     </a>
                                 <% } %>
                     
                                 <% if (totalPages > 3) { %>
-                                    <!-- If there are more pages, add ellipsis and the last page link -->
+                                    
                                     <span>...</span>
                                     <a href="?page=<%= totalPages %>&sort=<%= sort %>&order=<%= order %>&category=<%= selectedCategory %>">
                                         <%= totalPages %>
@@ -238,24 +334,75 @@
         function applyFilters() {
             const categorySelect = document.getElementById('categorySelect');
             const sortSelect = document.getElementById('sortSelect');
+            const searchInput = document.querySelector('input[name="search"]');
+    
             const selectedCategory = categorySelect.value;
             const selectedSort = sortSelect.value;
-
+            const searchQuery = searchInput.value;
+    
             const queryParams = new URLSearchParams();
-
+    
+            
+            if (searchQuery) {
+                queryParams.append('search', searchQuery);
+            }
+    
+            
             if (selectedCategory) {
                 queryParams.append('category', selectedCategory);
             }
+    
+            
             if (selectedSort) {
                 const [sort, order] = selectedSort.split('_');
                 queryParams.append('sort', sort);
                 queryParams.append('order', order);
             }
-
-            // Redirect to the same page with updated query parameters
+    
+            
             window.location.href = `/shop?${queryParams.toString()}`;
         }
     </script>
+    
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+ 
+ 
+     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+ 
+     <script>
+       function toggleWishlist(productId, element) {
+     fetch('/toggleWishlist', {
+         method: 'POST',
+         headers: {
+             'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({ productId })
+     })
+     .then(response => response.json())
+     .then(data => {
+         if (data.inWishlist) {
+             
+             element.querySelector('img').src = 'img/icon/heart.png';
+             toastr.success(data.message); 
+         } else {
+             
+             element.querySelector('img').src = 'img/icon/heart1.png';
+             toastr.error(data.message); 
+         }
+     })
+     .catch(err => {
+         console.error('Error:', err);
+         toastr.error('Failed to update wishlist.');
+     });
+ }
+ 
+ 
+     </script>
 </body>
+
 
 </html>

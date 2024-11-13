@@ -214,7 +214,10 @@ const getUserprofile = async (req, res) => {
 
         const addressData = await Address.findOne({ userId: userId });
 
-        res.render("user/profile", { user: userData, addresses: addressData ? addressData.address : [] });
+        res.render("user/profile", {
+            user: userData, addresses: addressData ? addressData.address : [], wallet: user.wallet,
+            referralCode: user.referalCode
+        });
     } catch (error) {
         console.log(error.message, "Error in load user profile");
         res.status(500).send("Internal server error");
@@ -349,12 +352,12 @@ const getAddAddres = async (req, res) => {
     try {
         const user = req.session.user;
         const userId = req.session.user.id;
-        const returnTo = req.query.returnTo||'profile';
+        const returnTo = req.query.returnTo || 'profile';
 
 
         const userData = await User.findById(user.id);
         const addressData = await Address.findOne({ userId: userId });
-        res.render("user/addAddress", { user: userData, addresses: addressData ? addressData.address : [],returnTo });
+        res.render("user/addAddress", { user: userData, addresses: addressData ? addressData.address : [], returnTo });
     }
     catch (error) {
         console.log(error.message, "Error in load add address");
@@ -366,7 +369,7 @@ const getAddAddres = async (req, res) => {
 
 const addAddress = async (req, res) => {
     try {
-        const { addressType, name, city, state, pincode, phone, email,returnTo } = req.body;
+        const { addressType, name, city, state, pincode, phone, email, returnTo } = req.body;
         const user = req.session.user;
 
 
@@ -518,32 +521,32 @@ const editAddress = async (req, res) => {
 
 const deleteAddress = async (req, res) => {
     try {
-      const addressId = req.params.id;
-      console.log("aid",addressId)
-      const userId = req.session.user.id;
-  
-      const addressDoc = await Address.findOneAndUpdate(
-        { userId:userId },
-        { $pull: { address: { _id: addressId } } },
-        { new: true }
-      );
+        const addressId = req.params.id;
+        console.log("aid", addressId)
+        const userId = req.session.user.id;
 
-      console.log("add2",addressDoc)
+        const addressDoc = await Address.findOneAndUpdate(
+            { userId: userId },
+            { $pull: { address: { _id: addressId } } },
+            { new: true }
+        );
 
-  
-      if (addressDoc) {
-        res.json({ success: true });
-      }
-      else {
-        res.status(404).json({ success: false, message: 'Address not found' });
-      }
-    //   res.redirect('/profile');
+        console.log("add2", addressDoc)
+
+
+        if (addressDoc) {
+            res.json({ success: true });
+        }
+        else {
+            res.status(404).json({ success: false, message: 'Address not found' });
+        }
+        //   res.redirect('/profile');
     } catch (error) {
-      console.error(error.message, "Error in delete address");
-      res.status(500).json({ success: false, message: 'Error deleting address' });
+        console.error(error.message, "Error in delete address");
+        res.status(500).json({ success: false, message: 'Error deleting address' });
 
     }
-  };
+};
 
 
 
