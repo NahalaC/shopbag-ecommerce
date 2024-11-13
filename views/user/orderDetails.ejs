@@ -281,6 +281,7 @@
                   >
                     Cancel Order
                   </button>
+                  
                 </div>
                 <% } else if (order.status === 'Delivered') { %>
                 <div class="alert alert-success mt-3">
@@ -330,31 +331,67 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-      function cancelOrder(orderId) {
-        axios
-          .post("/cancelOrder", { orderId: orderId })
-          .then((response) => {
+      // function cancelOrder(orderId) {
+      //   axios
+      //     .post("/cancelOrder", { orderId: orderId })
+      //     .then((response) => {
+      //       if (response.status === 200) {
+      //         Swal.fire({
+      //           title: "Order Cancelled",
+      //           text: "Your order has been cancelled successfully!",
+      //           icon: "success",
+      //           confirmButtonText: "OK",
+      //         }).then(() => {
+      //           location.reload();
+      //         });
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.error("Order cancellation error:", error);
+      //       Swal.fire({
+      //         title: "Error",
+      //         text: "Could not cancel the order. Please try again later.",
+      //         icon: "error",
+      //         confirmButtonText: "OK",
+      //       });
+      //     });
+      // }
+
+// Function to cancel an order or an item
+function cancelOrder(orderId, itemId = null) {
+    const data = { orderId };
+    if (itemId) {
+        data.itemId = itemId;  // Send itemId if canceling a specific item
+    }
+
+    axios
+        .post("/cancelOrder", data)
+        .then((response) => {
             if (response.status === 200) {
-              Swal.fire({
-                title: "Order Cancelled",
-                text: "Your order has been cancelled successfully!",
-                icon: "success",
-                confirmButtonText: "OK",
-              }).then(() => {
-                location.reload();
-              });
+                Swal.fire({
+                    title: "Success",
+                    text: response.data.message,
+                    icon: "success",
+                    confirmButtonText: "OK",
+                }).then(() => {
+                    location.reload();  // Reload the page to show updated order status
+                });
             }
-          })
-          .catch((error) => {
+        })
+        .catch((error) => {
             console.error("Order cancellation error:", error);
             Swal.fire({
-              title: "Error",
-              text: "Could not cancel the order. Please try again later.",
-              icon: "error",
-              confirmButtonText: "OK",
+                title: "Error",
+                text: "Could not cancel the order. Please try again later.",
+                icon: "error",
+                confirmButtonText: "OK",
             });
-          });
-      }
+        });
+}
+
+
+
+
       function toggleOtherReasonInput(selectedReason) {
         const otherReasonInput = document.getElementById("otherReasonInput");
         otherReasonInput.style.display =

@@ -2,22 +2,48 @@ const User = require("../../models/User");
 const Order = require("../../models/orderModel");
 const Product = require("../../models/Productmodel");
 
+// const orderInfo = async (req, res) => {
+//     try {
+//         const page = parseInt(req.query.page) || 1;
+//         const limit = 10;
+//         const skip = (page - 1) * limit;
+
+
+//         const orders = await Order.find().populate('userId')
+//             .sort({ createdOn: -1 })
+//             .skip(skip)
+//             .limit(limit);
+
+
+//         const totalOrders = await Order.countDocuments({});
+//         const totalPages = Math.ceil(totalOrders / limit);
+
+
+//         res.render('admin/orders', {
+//             orders,
+//             currentPage: page,
+//             totalPages,
+//         });
+//     } catch (error) {
+//         console.error('Error while loading order listing page:', error);
+//         res.redirect("/admin/pageError");
+//     }
+// };
 const orderInfo = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = 10;
         const skip = (page - 1) * limit;
 
-
-        const orders = await Order.find().populate('userId')
+        const orders = await Order.find()
+            .populate('userId')  // Populate the user details
+            .populate('orderedItems.productId') // Populate product details
             .sort({ createdOn: -1 })
             .skip(skip)
             .limit(limit);
 
-
         const totalOrders = await Order.countDocuments({});
         const totalPages = Math.ceil(totalOrders / limit);
-
 
         res.render('admin/orders', {
             orders,
