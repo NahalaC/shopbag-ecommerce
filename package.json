@@ -3,12 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start app.js --name 'shopbag'",
-    "dev": "nodemon app.js",
+    "start": "nodemon app.js",
     "lint": "standard",
-    "lint:fix": "standard --fix",
-    "test": "echo \"No tests specified\" && exit 0",
-    "build": "echo \"Build step not needed for Node.js app\""
+    "lint:fix": "standard --fix"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
