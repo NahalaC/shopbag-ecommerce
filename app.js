@@ -27,12 +27,12 @@ mongoose
 app.use(
   session({
 
-    
+
     secret: process.env.SESSION_SECRET || 'yourSuperSecretKey123!@#ABCdef',
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI || 'mongodb://localhost:27017/shopbag'
+      mongoUrl: process.env.MONGODB_URI 
     }),
     cookie: {
       httpOnly: true,
