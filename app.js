@@ -1,4 +1,6 @@
+
 const express = require('express')
+require('dotenv').config()
 const path = require('path')
 const mongoose = require('mongoose')
 const session = require('express-session')
@@ -7,7 +9,7 @@ const MongoStore = require('connect-mongo')
 const passport = require('./config/passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 // const multer=require('multer');
-require('dotenv').config()
+
 const userRoutes = require('./routes/userRoutes')
 const adminRoutes = require('./routes/adminRoutes')
 const User = require('./models/User')
@@ -16,7 +18,7 @@ const app = express()
 const nocache = require('nocache')
 
 mongoose
-  .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/shopbag')
+  .connect(process.env.MONGODB_URI )
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) =>
     console.error('Error connecting to MongoDB:', error.message)
@@ -24,6 +26,8 @@ mongoose
 
 app.use(
   session({
+
+    
     secret: process.env.SESSION_SECRET || 'yourSuperSecretKey123!@#ABCdef',
     resave: false,
     saveUninitialized: true,
