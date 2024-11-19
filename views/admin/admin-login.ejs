@@ -134,31 +134,31 @@
     </div>
 
     <script>
-      // Validation function
+      
       function validateForm() {
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value.trim();
         const errorMessage = document.getElementById("error-message");
 
-        errorMessage.innerHTML = ""; // Clear previous errors
+        errorMessage.innerHTML = ""; 
 
-        // Regular expression for validating email
+        
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        // Check if email matches the format
+        
         if (!emailRegex.test(email)) {
           errorMessage.innerHTML = "Please enter a valid email address.";
-          return false; // Prevent form submission
+          return false; 
         }
 
-        // Check if password field is empty
+       
         if (!password) {
           errorMessage.innerHTML = "Password is required.";
-          return false; // Prevent form submission
+          return false; 
         }
 
-        // Additional validation can be added here
-        return true; // Allow form submission
+        
+        return true; 
       }
     </script>
   </body>
