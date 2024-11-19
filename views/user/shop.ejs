@@ -107,12 +107,13 @@
 
 
 }
-
-    .wishlist-icon {
-    width: 24px; 
+.wishlist-icon {
+    width: 24px; /* Set this to the size of your resized heart1.png */
     height: 24px;
-    transition: all 0.3s ease; 
+    object-fit: contain; /* Ensures the image fits within the container */
+    transition: all 0.3s ease; /* Smooth transition when toggling */
 }
+
 
 .wishlist-icon.empty-heart {
     opacity: 0.6; 
@@ -219,20 +220,24 @@
                                     <a href="/productPage?id=<%= product._id %>">
                                         <div class="product__item__pic set-bg" data-setbg="/uploads/product-images/<%= product.productImage[0] %>">
                                             <ul class="product__hover">
-
-                                               <li>
-                                            <a href="#" onclick="toggleWishlist('<%= product.id %>', this)">
-                                                
-                                                <img src="img/icon/<%= wishlistProductIds.includes(product.id.toString()) ? 'heart.png' : 'heart1.png' %>"
-                                                     class="rounded rounded-5 wishlist-icon"
-                                                     alt="wishlist">
-                                            </a>
-                                        </li>
-                                                <li><img src="img/icon/compare.png" alt=""> <span>Compare</span></li>
-                                                <li><img src="img/icon/search.png" alt=""></li>
+                                                <li>
+                                                    <a href="#" onclick="toggleWishlist('<%= product.id %>', this)">
+                                                        <img src="img/icon/<%= wishlistProductIds.includes(product.id.toString()) ? 'heart.png' : 'heart1.png' %>"
+                                                             class="rounded rounded-5 wishlist-icon"
+                                                             alt="wishlist">
+                                                    </a>
+                                                </li>
+                                                <!-- <li>
+                                                    <img src="img/icon/compare.png" alt=""> 
+                                                    <span>Compare</span>
+                                                </li>
+                                                <li>
+                                                    <img src="img/icon/search.png" alt="">
+                                                </li> -->
                                             </ul>
                                         </div>
                                     </a>
+                                    
 
                                      
                                     <% if (product.productOffer > 0) { %>

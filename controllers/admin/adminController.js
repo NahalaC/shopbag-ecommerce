@@ -21,30 +21,60 @@ const loadAdmin = async (req, res) => {
     res.redirect('/pageError')
   }
 }
+// const login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body
+//     const admin = await User.findOne({ email, isAdmin: true })
+
+//     if (admin) {
+//       const passwordMatch = await bcrypt.compare(password, admin.password)
+//       if (passwordMatch) {
+//         req.session.admin = true
+//         // redirecting to dashboard
+//         return res.redirect('/admin/dashboard')
+//       } else {
+//         req.flash('error', 'Invalid password')
+//         return res.redirect('/admin/login')
+//       }
+//     } else {
+//       req.flash('error', 'Admin not found')
+//       return res.redirect('/admin/login')
+//     }
+//   } catch (error) {
+//     console.error('Admin login error:', error)
+//     return res.redirect('/pageError')
+//   }
+// }
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body
-    const admin = await User.findOne({ email, isAdmin: true })
+    const { email, password } = req.body;
+
+    // Check if the user exists and is an admin
+    const admin = await User.findOne({ email, isAdmin: true });
 
     if (admin) {
-      const passwordMatch = await bcrypt.compare(password, admin.password)
+      // Validate password
+      const passwordMatch = await bcrypt.compare(password, admin.password);
       if (passwordMatch) {
-        req.session.admin = true
-        // redirecting to dashboard
-        return res.redirect('/admin/dashboard')
+        // Set session for admin
+        req.session.admin = true;
+        return res.redirect('/admin/dashboard');
       } else {
-        req.flash('error', 'Invalid password')
-        return res.redirect('/admin/login')
+        // Password doesn't match
+        return res.render('admin/admin-login', { message: 'Invalid email or password' });
       }
     } else {
-      req.flash('error', 'Admin not found')
-      return res.redirect('/admin/login')
+      // Admin not found
+      return res.render('admin/admin-login', { message: 'Invalid email or password' });
     }
   } catch (error) {
-    console.error('Admin login error:', error)
-    return res.redirect('/pageError')
+    console.error('Admin login error:', error);
+    return res.redirect('/pageError');
   }
-}
+};
+
+
+
 
 const loadDashboard = async (req, res) => {
   try {

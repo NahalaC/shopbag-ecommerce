@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
-    <title>Shop bag Admin Login</title>
-
+    <title>Shop Bag Admin Login</title>
     <style>
       @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
       * {
@@ -19,17 +17,10 @@
         height: 100%;
         width: 100%;
         place-items: center;
-        /* background: #f2f2f2; */
-        /* background: linear-gradient(-135deg, #c850c0, #4158d0); */
-       /* background-image: url("/public/login img.jpg");*/
         background-size: cover;
         background-position: center top;
         background-repeat: no-repeat;
         background-attachment: fixed;
-      }
-      ::selection {
-        background: #4158d0;
-        color: #fff;
       }
       .wrapper {
         width: 380px;
@@ -90,32 +81,6 @@
         background: #fff;
         transform: translateY(-50%);
       }
-      form .content {
-        display: flex;
-        width: 100%;
-        height: 50px;
-        font-size: 16px;
-        align-items: center;
-        justify-content: space-around;
-      }
-      form .content .checkbox {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      form .content input {
-        width: 15px;
-        height: 15px;
-        background: red;
-      }
-      form .content label {
-        color: #262626;
-        user-select: none;
-        padding-left: 5px;
-      }
-      form .content .pass-link {
-        color: "";
-      }
       form .field input[type="submit"] {
         color: #fff;
         border: none;
@@ -130,38 +95,11 @@
       form .field input[type="submit"]:active {
         transform: scale(0.95);
       }
-      form .signup-link {
-        color: #262626;
-        margin-top: 20px;
-        text-align: center;
-      }
-      form .pass-link a,
-      form .signup-link a {
-        color: #4158d0;
-        text-decoration: none;
-      }
-      form .pass-link a:hover,
-      form .signup-link a:hover {
-        text-decoration: underline;
-      }
-
-      .custom-button {
-        background-color: #007bff;
-        color: #e61818;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        text-decoration: none;
-      }
 
       #error-message {
         color: red;
-      }
-
-      .custom-button:hover {
-        background-color: #0772e4;
+        margin-top: 10px;
+        text-align: center;
       }
     </style>
   </head>
@@ -174,29 +112,14 @@
       <div class="alert text-danger text-start"><%= message %></div>
       <% } %>
 
-      <form
-        id="login-form"
-        action="/admin/login"
-        method="post"
-        onsubmit="return validateForm()"
-      >
+      <form id="login-form" action="/admin/login" method="post">
         <div class="field">
-          <input
-            type="text"
-            name="email"
-            id="email"
-            placeholder="Email"
-          /><br />
+          <input type="text" name="email" id="email" placeholder="Email" />
           <label>Email</label>
         </div>
 
         <div class="field">
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-          /><br />
+          <input type="password" name="password" id="password" placeholder="Password" />
           <label>Password</label>
         </div>
 
@@ -205,32 +128,37 @@
         </div>
 
         <div class="field">
-          <input type="submit" value="Login" />
+          <input type="submit" value="Login" onclick="return validateForm()" />
         </div>
       </form>
     </div>
 
     <script>
+      // Validation function
       function validateForm() {
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
-        var errorMessage = document.getElementById("error-message");
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const errorMessage = document.getElementById("error-message");
 
-        errorMessage.innerHTML = "";
+        errorMessage.innerHTML = ""; // Clear previous errors
 
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // Regular expression for validating email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        // Check if email matches the format
         if (!emailRegex.test(email)) {
           errorMessage.innerHTML = "Please enter a valid email address.";
-          return false;
+          return false; // Prevent form submission
         }
 
-        if (password.trim() === "") {
-          errorMessage.innerHTML = "Please enter your password.";
-          return false;
+        // Check if password field is empty
+        if (!password) {
+          errorMessage.innerHTML = "Password is required.";
+          return false; // Prevent form submission
         }
 
-        return true;
+        // Additional validation can be added here
+        return true; // Allow form submission
       }
     </script>
   </body>
