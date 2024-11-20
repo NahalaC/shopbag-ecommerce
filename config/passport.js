@@ -7,11 +7,9 @@ require('dotenv').config()
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL:" https://shopebag.site/auth/google/callback",
-  passReqToCallback:true
-},
-
-async (accessToken, refreshToken, profile, done) => {
+  callbackURL: process.env.GOOGLE_CALLBACK_URL,
+  scope: ['profile', 'email']
+},async (accessToken, refreshToken, profile, done) => {
   try {
     let user = await User.findOne({ googleId: profile.id })
 
